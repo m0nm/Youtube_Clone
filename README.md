@@ -2,4 +2,4 @@
 A simple youtube clone using YouTube Data API V3. Still needs some adjustment (To laugh-at in the future)
 
 # Live Demo: 
-[shorturl.at/glmwW](shorturl.at/glmwW)
+[shorturl.at/glmwW]
