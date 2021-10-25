@@ -1,0 +1,10 @@
+.logo-container {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo {
+  margin-left: 6px;
+}
