@@ -1,5 +1,8 @@
-# Youtube_Clone_V1
-A simple youtube clone using YouTube Data API V3. Still needs some adjustment (To laugh-at in the future)
+# Youtube Clone V2
 
-# Live Demo: 
-https://clone-4095b.web.app
+This is the second version of my youtube clone completely rewritten using Nextjs and youtube api v3, You can watch and search for videos.
+
+## Todo
+
+- Add a dark mode theme
+- Add Google Sign-In Feature
