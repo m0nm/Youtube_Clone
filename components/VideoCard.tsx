@@ -278,4 +278,4 @@ const Container = styled.div<StyledProps>`
     }
   }
 `;
-//TODO: fix styling video card, use css var, add 403 ,build
+
