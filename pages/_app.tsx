@@ -5,7 +5,7 @@ import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
 import { useMediaQuery } from "react-responsive";
 import { useStore } from "../store/store";
-import Error403 from "./Error403";
+import Error403 from "../components/Error403";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const is_mobile = useMediaQuery({ query: "(max-width: 800px)" });
