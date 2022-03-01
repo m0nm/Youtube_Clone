@@ -1,3 +1,5 @@
+@import "../../../../styles/_variables.scss";
+
 .container {
   width: 100%;
   max-height: 200px;
@@ -11,6 +13,16 @@
 }
 
 // -------- * ---------
+.menu {
+  font-size: 30px;
+  margin-left: 10px;
+  display: none;
+
+  @media (max-width: $breakpoint) {
+    display: inline;
+  }
+}
+// -------- * ---------
 .logo {
   width: 300px;
   height: 70px;
@@ -20,20 +32,26 @@
 // -------- * ---------
 .formContainer {
   height: 100%;
-  width: 60%;
+  width: 40%;
   display: flex;
   align-items: center;
+  flex-grow: 1;
+
+  @media (max-width: $breakpoint) {
+    display: none;
+  }
 }
 
 // -------- * ---------
 .form {
   height: 2.5rem;
+  width: 100%;
   input {
     border: 1px solid #d8d8d8;
     outline: none;
     padding: 10px 10px;
-    width: 580px;
     height: 100%;
+    width: 80%;
     color: #333333;
     font-size: 16px;
 
@@ -67,6 +85,11 @@
     font-size: 20px;
     margin-right: 1rem;
     cursor: pointer;
+
+    .mobileSearch {
+      margin-right: 10px;
+      display: none;
+    }
   }
 
   button {
@@ -83,6 +106,24 @@
     i {
       font-size: 22px;
       margin: 3px 10px 0 0;
+    }
+  }
+
+  @media (max-width: $breakpoint) {
+    .menu {
+      display: inline;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      .mobileSearch {
+        display: inline;
+      }
+    }
+
+    button {
+      display: none;
     }
   }
 }
