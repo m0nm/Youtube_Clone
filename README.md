@@ -4,7 +4,7 @@ export components
 
 # Todo
 
-navbar option dark mode pop up
+test theme toggle
 link youtube logo
 responsive navbar
 navbar mobile search to input

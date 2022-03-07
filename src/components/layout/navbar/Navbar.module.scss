@@ -1,6 +1,14 @@
 @import "../../../../styles/_variables.scss";
 
+@mixin mobile-display-handler($display) {
+  @media (max-width: $breakpoint) {
+    display: $display;
+  }
+}
+
+// -------- * ---------
 .container {
+  background-color: $fg_light;
   width: 100%;
   max-height: 200px;
   position: sticky;
@@ -13,17 +21,16 @@
 }
 
 // -------- * ---------
-.menu {
+.sidebarMenu {
   font-size: 30px;
   margin-left: 10px;
   display: none;
 
-  @media (max-width: $breakpoint) {
-    display: inline;
-  }
+  @include mobile-display-handler(inline);
 }
 // -------- * ---------
 .logo {
+  cursor: pointer;
   width: 300px;
   height: 70px;
   transform: scale(0.4);
@@ -37,9 +44,7 @@
   align-items: center;
   flex-grow: 1;
 
-  @media (max-width: $breakpoint) {
-    display: none;
-  }
+  @include mobile-display-handler(none);
 }
 
 // -------- * ---------
@@ -82,16 +87,28 @@
   align-items: center;
 
   .option {
+    position: relative;
     font-size: 20px;
     margin-right: 1rem;
-    cursor: pointer;
 
     .mobileSearch {
       margin-right: 10px;
       display: none;
+
+      @include mobile-display-handler(inline);
+    }
+
+    @media (max-width: $breakpoint) {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      cursor: pointer;
     }
   }
 
+  // -------- * ---------
   button {
     cursor: pointer;
     margin-right: 1.5rem;
@@ -103,27 +120,132 @@
     font-size: 16px;
     color: #3ea6ff;
     border: 1px solid #3ea6ff;
-    i {
-      font-size: 22px;
-      margin: 3px 10px 0 0;
+    svg {
+      color: #3ea6ff !important;
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    @media (max-width: $breakpoint) {
+      display: none;
+    }
+  }
+}
+// -------- * ---------
+.modal {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  width: 20rem;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  // -------- * ---------
+  .firstSection {
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      font-size: 16px;
+      margin-left: 1rem;
+    }
+
+    svg {
+      margin-top: 1.5px;
+      font-size: 24px;
+    }
+
+    &:hover {
+      background-color: #f8f8f8;
     }
   }
 
-  @media (max-width: $breakpoint) {
-    .menu {
-      display: inline;
-    }
-
-    .option {
+  // -------- * ---------
+  .secondSection {
+    div {
       display: flex;
       align-items: center;
-      .mobileSearch {
-        display: inline;
+      margin-top: 1rem;
+      padding: 0 1rem;
+
+      svg {
+        font-size: 26px;
+        color: gray;
       }
+      span {
+        margin-left: 12px;
+        font-size: large;
+      }
+    }
+    p {
+      font-size: 14px;
+      margin-top: 1rem;
+      margin-left: 1rem;
+      padding: 1rem 0;
+      border: 1px solid rgba(0, 0, 0, 0.2) {
+        left: none;
+        right: none;
+      }
+      color: $light_secondary_color;
+    }
+
+    ul {
+      font-size: medium;
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        width: 100%;
+        cursor: pointer;
+
+        svg {
+          font-size: 22px;
+          margin-right: 10px;
+        }
+
+        &:hover {
+          background-color: #f8f8f8;
+        }
+      }
+    }
+  }
+}
+
+// -------- * ---------
+// Dark mode settings
+.containerDark {
+  @extend .container;
+
+  background: $fg_dark;
+
+  .form {
+    input {
+      background-color: #121212;
+      border: none;
+      color: white;
     }
 
     button {
-      display: none;
+      background: #313131;
+      border: none;
+    }
+  }
+
+  .modal {
+    background-color: #212121;
+
+    .firstSection:hover {
+      background-color: #2b2b2b;
+    }
+
+    .secondSection li:hover {
+      background-color: #2b2b2b;
     }
   }
 }

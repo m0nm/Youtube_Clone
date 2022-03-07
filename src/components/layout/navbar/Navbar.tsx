@@ -1,35 +1,74 @@
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 
 import { BsThreeDotsVertical, BsSearch } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { HiOutlineMenu } from "react-icons/hi";
+import Logo from "./../../../../public/youtube-logo.png";
+import LogoDark from "./../../../../public/youtube-logo-dark.png";
 
 import styles from "./Navbar.module.scss";
 
-import Logo from "./../../../../public/youtube-logo.png";
+import Modal from "./modal/Modal";
+import { useDetectOutsideClick } from "../../../hooks/useDetectOutsideClick";
+
 function Navbar() {
+  // change theme hook
+  const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
+  // wait for theme to be mounted on client
+  useEffect(() => setMounted(true), []);
+
+  // toggle theme modal
+  const [modal, setModal] = useState(false);
+
+  // close theme modal if clicked outside
+  const ref = useRef<HTMLDivElement>(null);
+  useDetectOutsideClick(
+    ref,
+    useCallback(() => {
+      setModal(false);
+    }, [setModal])
+  );
+
+  if (!mounted) return null;
   return (
-    <div className={styles.container}>
+    <div
+      className={theme === "light" ? styles.container : styles.containerDark}
+    >
       {/* sidebar menu if on mobile */}
-      <div className={styles.menu}>
-        <i>
-          <HiOutlineMenu />
-        </i>
+      <div className={styles.sidebarMenu}>
+        <HiOutlineMenu />
       </div>
       {/* logo */}
-      <div className={styles.logo}>
-        <Image src={Logo} alt="youtube logo" layout="fill" />
-      </div>
+      <Link passHref href="/">
+        <div className={styles.logo}>
+          {theme === "light" ? (
+            <Image
+              priority={true}
+              src={Logo}
+              alt="youtube logo"
+              layout="fill"
+            />
+          ) : (
+            <Image
+              priority={true}
+              src={LogoDark}
+              alt="youtube logo dark"
+              layout="fill"
+            />
+          )}
+        </div>
+      </Link>
 
       {/* form */}
       <div className={styles.formContainer}>
         <form className={styles.form}>
           <input name="search" placeholder="Search" type="text" />
           <button>
-            <i>
-              <BsSearch />
-            </i>
+            <BsSearch />
           </button>
         </form>
       </div>
@@ -40,13 +79,14 @@ function Navbar() {
         <div className={styles.option}>
           <BsSearch className={styles.mobileSearch} />
 
-          <BsThreeDotsVertical />
+          <div ref={ref} data-testid="modal-container">
+            <BsThreeDotsVertical onClick={() => setModal(!modal)} />
+            {modal && <Modal setModal={setModal} styles={styles} />}
+          </div>
         </div>
         {/* Login/ Avatar */}
         <button>
-          <i>
-            <FaRegUserCircle />
-          </i>
+          <FaRegUserCircle />
           SIGN IN
         </button>
       </div>
