@@ -6,7 +6,6 @@ import { BsArrowLeft } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
 
 type IModal = {
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
   styles:
     | {
         readonly [key: string]: string;
@@ -14,7 +13,7 @@ type IModal = {
     | any;
 };
 
-function Modal({ styles, setModal }: IModal) {
+function Modal({ styles }: IModal) {
   // switch theme
   const { theme, setTheme } = useTheme();
 

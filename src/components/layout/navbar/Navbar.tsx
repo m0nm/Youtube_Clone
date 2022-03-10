@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
+import { useSession, signIn } from "next-auth/react";
 
 import { BsThreeDotsVertical, BsSearch } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { HiOutlineMenu } from "react-icons/hi";
 import Logo from "./../../../../public/youtube-logo.png";
 import LogoDark from "./../../../../public/youtube-logo-dark.png";
+import spinnerGif from "./../../../../public/spinner.gif";
 
 import styles from "./Navbar.module.scss";
 
@@ -15,6 +17,9 @@ import Modal from "./modal/Modal";
 import { useDetectOutsideClick } from "../../../hooks/useDetectOutsideClick";
 
 function Navbar() {
+  // google oauth
+  const { data: session, status } = useSession();
+
   // change theme hook
   const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
@@ -34,6 +39,7 @@ function Navbar() {
   );
 
   if (!mounted) return null;
+
   return (
     <div
       className={theme === "light" ? styles.container : styles.containerDark}
@@ -81,14 +87,25 @@ function Navbar() {
 
           <div ref={ref} data-testid="modal-container">
             <BsThreeDotsVertical onClick={() => setModal(!modal)} />
-            {modal && <Modal setModal={setModal} styles={styles} />}
+            {modal && <Modal styles={styles} />}
           </div>
         </div>
         {/* Login/ Avatar */}
-        <button>
-          <FaRegUserCircle />
-          SIGN IN
-        </button>
+
+        {status === "unauthenticated" ? (
+          <button onClick={() => signIn("google")}>
+            <FaRegUserCircle />
+            SIGN IN
+          </button>
+        ) : (
+          <div className={styles.avatar}>
+            <Image
+              src={(session?.user?.image as string) || spinnerGif}
+              layout="fill"
+              alt="avatar"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
