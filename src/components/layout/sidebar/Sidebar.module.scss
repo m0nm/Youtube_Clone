@@ -1,0 +1,96 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/common" as *;
+
+.container {
+  z-index: 7;
+  width: 6rem;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+  background-color: $fg_light;
+  display: block;
+  transition: width 0.3s;
+
+  @media (max-width: $breakpoint) {
+    width: 0;
+
+    .item {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        width: 60%;
+        margin-left: 1rem;
+      }
+    }
+
+    .button,
+    .signSpan {
+      display: block;
+    }
+  }
+}
+
+// < ----- * ------ >
+.item {
+  width: 100%;
+  padding: 7px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+
+  &:first-child {
+    margin-top: 1rem;
+  }
+
+  &:hover,
+  &:focus {
+    background: #f8f8f8;
+  }
+
+  // svg
+
+  font-size: 24px;
+
+  p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.signSpan {
+  width: 100%;
+  font-size: 12px;
+  padding: 1rem;
+  border-top: 1px solid #f8f8f8;
+  display: none;
+}
+
+.button {
+  margin-left: 1rem;
+  display: none;
+
+  button {
+    @include sign-button;
+  }
+}
+
+// < ----- * ------ >
+// dark mode styles
+.containerDark {
+  @extend .container;
+  background-color: $fg_dark;
+
+  .item:hover {
+    background-color: #2b2b2b;
+  }
+
+  .item p {
+    color: white;
+  }
+}

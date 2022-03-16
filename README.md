@@ -4,9 +4,5 @@ export components
 
 # Todo
 
-fix the tests and providers
+pass avatar modal test
 test oauth
-test theme toggle
-navbar mobile search to input
-sidebar
-navbar mobile toggle sidebar

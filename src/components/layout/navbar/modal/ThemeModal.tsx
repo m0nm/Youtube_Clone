@@ -5,15 +5,9 @@ import { WiMoonAltWaxingGibbous1 } from "react-icons/wi";
 import { BsArrowLeft } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
 
-type IModal = {
-  styles:
-    | {
-        readonly [key: string]: string;
-      }
-    | any;
-};
+import styles from "../Navbar.module.scss";
 
-function Modal({ styles }: IModal) {
+function ThemeModal() {
   // switch theme
   const { theme, setTheme } = useTheme();
 
@@ -21,7 +15,7 @@ function Modal({ styles }: IModal) {
   const [secondary, setSecondary] = useState(false);
 
   //  check mark icon
-  const checkSvg = <AiOutlineCheck />;
+  const checkSvg = <AiOutlineCheck title={`${theme} mode on`} />;
 
   return (
     <div className={styles.modal}>
@@ -61,4 +55,4 @@ function Modal({ styles }: IModal) {
   );
 }
 
-export default Modal;
+export default ThemeModal;
