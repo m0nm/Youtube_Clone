@@ -10,6 +10,14 @@ html[data-theme="dark"] {
   svg {
     color: white;
   }
+
+  ::-webkit-scrollbar-thumb {
+    background: #aaa;
+
+    &:hover {
+      background-color: rgb(102, 101, 101);
+    }
+  }
 }
 
 body {
@@ -35,4 +43,27 @@ a {
 
 *:focus {
   outline: none;
+}
+
+// scrollbar styling
+::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(120, 120, 120);
+  border-radius: 52px;
+  &:hover {
+    background: rgb(156, 156, 156);
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
