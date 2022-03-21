@@ -42,7 +42,7 @@ function Navbar({ setExpand }: INavbar) {
   // toggle sign-out avatar modal
   const [avatarModal, setAvatarModal] = useState(false);
 
-  // close theme modal clicked outside
+  // close theme modal if clicked outside
   const themeRef = useRef<HTMLDivElement>(null);
   useDetectOutsideClick(
     themeRef,

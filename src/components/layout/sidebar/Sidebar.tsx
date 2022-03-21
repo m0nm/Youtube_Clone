@@ -2,6 +2,7 @@ import React from "react";
 
 import styles from "./Sidebar.module.scss";
 
+import { signIn, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useMounted } from "../../../hooks/useMounted";
 import { useMediaQuery } from "react-responsive";
@@ -16,7 +17,10 @@ type ISidebar = {
 };
 
 function Sidebar({ expand }: ISidebar) {
-  // themz
+  // google oath
+  const { data: session } = useSession();
+
+  // theme
   const { theme } = useTheme();
 
   // check for mobile screens for expandable sidebar
@@ -67,15 +71,20 @@ function Sidebar({ expand }: ISidebar) {
       </div>
 
       {/* sign button */}
-      <span className={styles.signSpan}>
-        Sign in to like videos, comment, and subscribe.
-      </span>
-      <div className={styles.button}>
-        <button>
-          <FaRegUserCircle />
-          SIGN IN
-        </button>
-      </div>
+      {!session && (
+        <>
+          <span className={styles.signSpan}>
+            Sign in to like videos, comment, and subscribe.
+          </span>
+
+          <div className={styles.button}>
+            <button onClick={() => signIn("google")}>
+              <FaRegUserCircle />
+              SIGN IN
+            </button>
+          </div>
+        </>
+      )}
     </aside>
   );
 }

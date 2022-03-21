@@ -1,0 +1,52 @@
+.container {
+  width: 98%;
+  margin-left: 10px;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.keyword {
+  background-color: #eeecec;
+  min-width: fit-content;
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 15px;
+  border: none;
+  border-radius: 30px;
+  color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+
+  &:hover {
+    background-color: #dbdbdb;
+  }
+
+  &.active {
+    background-color: #030303;
+    color: white;
+  }
+
+  &:first-child {
+    margin-left: 5px;
+  }
+}
+
+// dark mode settings
+.containerDark {
+  @extend .container;
+
+  .keyword {
+    background: #373737;
+    color: white;
+
+    &:hover {
+      background-color: #494949;
+    }
+
+    &.active {
+      background-color: white;
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+}

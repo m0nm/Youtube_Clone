@@ -7,7 +7,7 @@ import { setup } from "../../../../utils/setup_test_render";
 
 describe("<Sidebar />", () => {
   test("Sidebar renders correctly", () => {
-    render(<Sidebar expand={true} />);
+    setup(<Sidebar expand={true} />);
   });
 
   test("sidebar width change on mobile", async () => {

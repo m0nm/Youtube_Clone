@@ -1,0 +1,15 @@
+@use "./variables" as *;
+
+.container {
+  width: 100%;
+  margin: 2rem auto 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 3rem;
+  transform: scaleX(0.95);
+
+  @media (max-width: $breakpoint) {
+    flex-direction: column;
+  }
+}

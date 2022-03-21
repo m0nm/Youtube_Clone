@@ -3,13 +3,13 @@
 
 .container {
   z-index: 7;
-  width: 6rem;
+  width: 5rem;
   height: 100vh;
-  position: fixed;
   overflow: hidden;
+  position: fixed;
   background-color: $fg_light;
-  display: block;
   transition: width 0.3s;
+  transform: scaleX(0.95);
 
   @media (max-width: $breakpoint) {
     width: 0;

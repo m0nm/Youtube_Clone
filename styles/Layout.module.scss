@@ -1,0 +1,14 @@
+@use "./variables" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container main {
+  margin-left: 5rem;
+
+  @media (max-width: $breakpoint) {
+    margin-left: 0;
+  }
+}
