@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import classNames from "classNames";
 import ScrollContainer from "react-indiana-drag-scroll";
 
@@ -33,7 +33,8 @@ function Categories() {
   // style active element
   const [active, setActive] = useState("All");
   const handleClick = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    setActive(e.currentTarget.innerText);
+    const keyword = e.currentTarget.innerText;
+    setActive(keyword);
   };
 
   return !useMounted() ? null : (

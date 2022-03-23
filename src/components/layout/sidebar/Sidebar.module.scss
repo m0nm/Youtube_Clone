@@ -7,6 +7,7 @@
   height: 100vh;
   overflow: hidden;
   position: fixed;
+  left: 0;
   background-color: $fg_light;
   transition: width 0.3s;
   transform: scaleX(0.95);

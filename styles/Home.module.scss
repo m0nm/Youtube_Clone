@@ -8,7 +8,7 @@
   column-gap: 10px;
   row-gap: 3rem;
   transform: scaleX(0.95);
-
+  overflow-y: hidden !important;
   @media (max-width: $breakpoint) {
     flex-direction: column;
   }

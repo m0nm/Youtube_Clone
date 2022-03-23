@@ -9,10 +9,11 @@ import axios from "axios";
 const baseUrl: string = "https://www.googleapis.com/youtube/v3";
 const key: string = process.env.NEXT_PUBLIC_YOUTUBE_KEY as string;
 
+// < -------- * --------- >
 // fetch the popular videos
 export const getPopularVideos = async (
   region: string = "GB",
-  page: string = ""
+  page: string | undefined = undefined
 ) => {
   const url = baseUrl + "/videos";
   const params = {
@@ -26,15 +27,19 @@ export const getPopularVideos = async (
   try {
     const res = await axios.get(url, { params });
 
-    const { items: videos, nextPageToken } = await res.data;
+    const { items, nextPageToken } = await res.data;
 
-    return { videos, nextPageToken };
+    return { items, nextPageToken };
   } catch (error) {
     console.log(error);
   }
 };
 
-// get the channel image
+// < -------- * --------- >
+// search for videos
+
+// < -------- * --------- >
+// Get the channel image
 export const getChannelImage = async (channelId: string) => {
   const url = baseUrl + "/channels";
   const params = {
