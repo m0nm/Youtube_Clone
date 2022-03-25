@@ -12,6 +12,8 @@ describe("<VideoCard />", () => {
         date=""
         title="funny cat video"
         channelName="daily cat"
+        channelId="5grt13za"
+        views="4000"
       />
     );
 
@@ -20,5 +22,22 @@ describe("<VideoCard />", () => {
 
     // channel
     expect(screen.getByText("daily cat")).toBeInTheDocument();
+  });
+
+  test("view count and date formated correctly", () => {
+    render(
+      <VideoCard
+        desc=""
+        thumbnail=""
+        title=""
+        channelName=""
+        channelId=""
+        date="Mar 23, 2022"
+        views="4000"
+      />
+    );
+
+    expect(screen.getByText(/4k/i)).toBeInTheDocument();
+    expect(screen.getByText(/3 days ago/i)).toBeInTheDocument();
   });
 });

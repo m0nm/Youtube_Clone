@@ -3,7 +3,7 @@ import React from "react";
 
 // basic styles
 const container = {
-  height: "100vh",
+  height: "90vh",
   display: "flex",
   flexDirection: "column" as "column",
   justifyContent: "center",
@@ -13,7 +13,8 @@ const container = {
 const heading = {
   fontSize: "22px",
   fontWeight: "500",
-  width: "90%",
+  width: "60%",
+  marginLeft: "10%",
 };
 
 const button = {

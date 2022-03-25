@@ -1,5 +1,5 @@
 export type IVideo = {
-  id: string;
+  id: { videoId: string } | string;
   statistics: { viewCount: string };
   snippet: {
     localized: {

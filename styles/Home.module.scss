@@ -13,3 +13,10 @@
     flex-direction: column;
   }
 }
+
+.container > * {
+  @media (max-width: $breakpoint) {
+    margin: 0 auto 2rem auto;
+    transform: scale(1.2);
+  }
+}

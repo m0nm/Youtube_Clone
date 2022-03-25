@@ -5,11 +5,6 @@
   width: 300px;
   max-height: 250px;
   cursor: pointer;
-
-  @media (max-width: $breakpoint) {
-    margin: 0 auto 2rem auto;
-    transform: scale(1.2);
-  }
 }
 
 // < -------- * -------- >
@@ -30,12 +25,9 @@
 
 // < -------- * -------- >
 .channelImage {
-  position: relative;
-  width: 32px;
-  height: 32px;
   border-radius: 50%;
   align-self: flex-start;
-  margin-top: 12px;
+  margin-top: 10px;
   img {
     width: object-fit;
     border-radius: 50%;
@@ -44,11 +36,11 @@
 
 // < -------- * -------- >
 .details {
-  width: 90%;
+  width: 94%;
   h4 {
     font-weight: 400;
     font-size: 16px;
-    width: 240px;
+    width: 245px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

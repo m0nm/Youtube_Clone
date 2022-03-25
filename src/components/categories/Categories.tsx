@@ -26,15 +26,18 @@ const keywords = [
   "MrBeast",
 ];
 
-function Categories() {
+type ICategories = {
+  category: string;
+  setCategory: React.Dispatch<SetStateAction<string>>;
+};
+
+function Categories({ category, setCategory }: ICategories) {
   // theme
   const { theme } = useTheme();
 
-  // style active element
-  const [active, setActive] = useState("All");
   const handleClick = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const keyword = e.currentTarget.innerText;
-    setActive(keyword);
+    setCategory(keyword);
   };
 
   return !useMounted() ? null : (
@@ -42,7 +45,8 @@ function Categories() {
       className={theme === "light" ? styles.container : styles.containerDark}
     >
       {keywords.map((keyword, i) => {
-        const isActive: boolean = active === keyword;
+        // style the active keyword
+        const isActive: boolean = category === keyword;
         return (
           <span
             key={i}
