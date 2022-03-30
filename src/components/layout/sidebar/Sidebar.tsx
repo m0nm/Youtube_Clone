@@ -11,6 +11,8 @@ import { AiFillHome, AiFillLike } from "react-icons/ai";
 import { MdSubscriptions } from "react-icons/md";
 import { FaDog, FaCat } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
+import Link from "next/link";
+import { useStore } from "../../../store/store";
 
 type ISidebar = {
   expand: boolean;
@@ -22,6 +24,9 @@ function Sidebar({ expand }: ISidebar) {
 
   // theme
   const { theme } = useTheme();
+
+  // this is for cats or dogs item
+  const { setCategory } = useStore();
 
   // check for mobile screens for expandable sidebar
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" });
@@ -41,16 +46,20 @@ function Sidebar({ expand }: ISidebar) {
       className={theme === "light" ? styles.container : styles.containerDark}
     >
       {/* home */}
-      <div className={styles.item}>
-        <AiFillHome />
-        <p>Home</p>
-      </div>
+      <Link passHref href="/">
+        <div onClick={() => window.location.reload()} className={styles.item}>
+          <AiFillHome />
+          <p>Home</p>
+        </div>
+      </Link>
 
       {/* subs */}
-      <div className={styles.item}>
-        <MdSubscriptions />
-        <p>Subscriptions</p>
-      </div>
+      <Link passHref href="/subs">
+        <div className={styles.item}>
+          <MdSubscriptions />
+          <p>Subscriptions</p>
+        </div>
+      </Link>
 
       {/* liked videos */}
       <div className={styles.item}>
@@ -59,16 +68,20 @@ function Sidebar({ expand }: ISidebar) {
       </div>
 
       {/* cats */}
-      <div className={styles.item}>
-        <FaCat />
-        <p>Cats!</p>
-      </div>
+      <Link passHref href="/">
+        <div onClick={() => setCategory("cats")} className={styles.item}>
+          <FaCat />
+          <p>Cats!</p>
+        </div>
+      </Link>
 
       {/* dogs */}
-      <div className={styles.item}>
-        <FaDog />
-        <p>Dogs!</p>
-      </div>
+      <Link passHref href="/">
+        <div onClick={() => setCategory("dogs")} className={styles.item}>
+          <FaDog />
+          <p>Dogs!</p>
+        </div>
+      </Link>
 
       {/* sign button */}
       {!session && (

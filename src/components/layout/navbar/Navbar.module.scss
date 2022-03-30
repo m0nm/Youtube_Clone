@@ -27,6 +27,7 @@
   font-size: 30px;
   margin-left: 10px;
   display: none;
+  cursor: pointer;
 
   @include mobile-display-handler(inline);
 }

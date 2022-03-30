@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import React, { SetStateAction, useState } from "react";
+import React from "react";
 import classNames from "classNames";
 import ScrollContainer from "react-indiana-drag-scroll";
 
@@ -13,7 +13,7 @@ const keywords = [
   "Puppies",
   "funny cats",
   "Tom and Jerry",
-  "React",
+  "Reactjs",
   "Nextjs",
   "Vue",
   "PHP",
@@ -28,7 +28,7 @@ const keywords = [
 
 type ICategories = {
   category: string;
-  setCategory: React.Dispatch<SetStateAction<string>>;
+  setCategory: (keyword: string) => void;
 };
 
 function Categories({ category, setCategory }: ICategories) {

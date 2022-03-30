@@ -35,6 +35,7 @@ export const getPopularVideos = async (
 
     return { items, nextPageToken };
   } catch (error: any) {
+    console.log(error.response.data.error);
     return error.response && error.response.status;
   }
 };
@@ -60,7 +61,7 @@ export const searchVideos = async (
 
     return { videos, nextPageToken };
   } catch (error: any) {
-    console.log(error instanceof Error && error.message);
+    console.log(error.response.data.error);
     return error.response && error.response.status;
   }
 };
@@ -100,4 +101,33 @@ export const getChannelImage = async (channelId: string) => {
   const image = await res.data.items[0].snippet.thumbnails.default.url;
 
   return image;
+};
+
+// < -------- * --------- >
+// get the list of subscriptions
+export const getSubscriptions = async (
+  accessToken: string,
+  page: string = ""
+) => {
+  const params = {
+    ...baseParams,
+    mine: true,
+    pageToken: page,
+  };
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  try {
+    const res = await axios.get(baseUrl + "/subscriptions", {
+      params,
+      headers,
+    });
+
+    return res.data;
+  } catch (error: any) {
+    console.log(error.response.data.error);
+    return error.response && error.response.status;
+  }
 };

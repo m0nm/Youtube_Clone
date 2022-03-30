@@ -1,11 +1,11 @@
-import type { GetServerSideProps, NextPage } from "next";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 
 import Categories from "../src/components/categories/Categories";
 import VideoCard from "../src/components/video-card/VideoCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { useStore } from "../src/store/store";
 import { getPopularVideos, searchVideos } from "../utils/fetch_from_youtube";
 
 import { IVideo } from "../interface";
@@ -24,7 +24,7 @@ const Home = () => {
 
   // < -------- * -------- >
   // show category videos
-  const [category, setCategory] = useState<string>("All");
+  const { category, setCategory } = useStore();
 
   useEffect(() => {
     // this is to cancel request if user clicks on another category before fetching is finished

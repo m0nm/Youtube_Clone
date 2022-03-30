@@ -103,7 +103,7 @@ function Navbar({ setExpand }: INavbar) {
       </div>
 
       {/* logo */}
-      <Link passHref href="/">
+      <Link prefetch={false} passHref href="/">
         <div className={styles.logo}>
           {theme === "light" ? (
             <Image

@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import Layout from "../src/components/layout/Layout";
 import React from "react";
-import Router from "next/router";
 import ErrorMessage from "../src/components/ErrorMessage";
 
 function MyApp({ Component, pageProps }: AppProps) {
