@@ -12,7 +12,7 @@ const key: string = process.env.NEXT_PUBLIC_YOUTUBE_KEY as string;
 const baseParams = {
   key,
   part: "snippet",
-  maxResults: 12,
+  maxResults: 1,
 };
 
 // < -------- * --------- >

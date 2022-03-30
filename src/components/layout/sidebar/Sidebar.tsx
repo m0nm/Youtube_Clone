@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 import styles from "./Sidebar.module.scss";
@@ -11,7 +12,12 @@ import { AiFillHome, AiFillLike } from "react-icons/ai";
 import { MdSubscriptions } from "react-icons/md";
 import { FaDog, FaCat } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
+<<<<<<< HEAD
 import Link from "next/link";
+=======
+import { IoMdFootball } from "react-icons/io";
+
+>>>>>>> sidebar
 import { useStore } from "../../../store/store";
 
 type ISidebar = {
@@ -61,11 +67,13 @@ function Sidebar({ expand }: ISidebar) {
         </div>
       </Link>
 
-      {/* liked videos */}
-      <div className={styles.item}>
-        <AiFillLike />
-        <p>Liked Videos</p>
-      </div>
+      {/* football */}
+      <Link passHref href="/">
+        <div onClick={() => setCategory("football")} className={styles.item}>
+          <IoMdFootball />
+          <p>Football</p>
+        </div>
+      </Link>
 
       {/* cats */}
       <Link passHref href="/">
