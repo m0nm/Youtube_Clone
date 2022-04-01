@@ -1,12 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, {
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import Router from "next/router";
+import React, { SetStateAction, useCallback, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { useSession, signIn } from "next-auth/react";
 
@@ -25,6 +20,48 @@ import { useMounted } from "../../../hooks/useMounted";
 import { useMediaQuery } from "react-responsive";
 import AvatarModal from "./modal/AvatarModal";
 
+// MobileForm and DesktopForm typing
+type IForm = {
+  search: string;
+  setSearch: React.Dispatch<SetStateAction<string>>;
+  handleSubmit: (e: React.FormEvent) => void;
+};
+
+// to conditionally render form for mobile only
+const MobileForm = (props: IForm) => {
+  return (
+    <form onSubmit={props.handleSubmit} className={styles.formMobile}>
+      <input
+        value={props.search}
+        onChange={(e) => props.setSearch(e.currentTarget.value)}
+        name="search"
+        placeholder="Search"
+        type="text"
+      />
+    </form>
+  );
+};
+
+// to conditionally render form for desktops only
+const DesktopForm = (props: IForm) => {
+  return (
+    <div className={styles.formContainer}>
+      <form onSubmit={props.handleSubmit} className={styles.form}>
+        <input
+          value={props.search}
+          onChange={(e) => props.setSearch(e.currentTarget.value)}
+          name="search"
+          placeholder="Search"
+          type="text"
+        />
+        <button>
+          <BsSearch />
+        </button>
+      </form>
+    </div>
+  );
+};
+
 type INavbar = {
   setExpand: React.Dispatch<SetStateAction<boolean>>;
 };
@@ -42,7 +79,7 @@ function Navbar({ setExpand }: INavbar) {
   // toggle sign-out avatar modal
   const [avatarModal, setAvatarModal] = useState(false);
 
-  // close theme modal if clicked outside
+  // close theme modal if mouse clicked outside the modal
   const themeRef = useRef<HTMLDivElement>(null);
   useDetectOutsideClick(
     themeRef,
@@ -51,7 +88,7 @@ function Navbar({ setExpand }: INavbar) {
     }, [setThemeModal])
   );
 
-  // close avatar modal if clicked outside
+  // close avatar modal if mouse clicked outside the modal
   const avatarRef = useRef<HTMLDivElement>(null);
   useDetectOutsideClick(
     avatarRef,
@@ -60,33 +97,21 @@ function Navbar({ setExpand }: INavbar) {
     }, [setAvatarModal])
   );
 
+  // check for device width to render either desktop form or mobile form
+  const isMobile = useMediaQuery({ maxWidth: 1024 });
+
   // toggle mobile search input
-  const [mobileSearch, setMobileSearch] = useState(false);
+  const [mobileInput, setMobileInput] = useState(false);
 
-  // to conditionally render form for mobile only
-  const MobileForm = () => {
-    const isMobile = useMediaQuery({ maxWidth: 1024 });
+  // search and form handle submit
+  const [search, setSearch] = useState("");
 
-    return !(mobileSearch && isMobile) ? null : (
-      <form className={styles.formMobile}>
-        <input name="search" placeholder="Search" type="text" />
-      </form>
-    );
-  };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // to conditionally render form for desktops only
-  const DesktopForm = () => {
-    const isDesktop = useMediaQuery({ minWidth: 1024 });
-    return !isDesktop ? null : (
-      <div className={styles.formContainer}>
-        <form className={styles.form}>
-          <input name="search" placeholder="Search" type="text" />
-          <button>
-            <BsSearch />
-          </button>
-        </form>
-      </div>
-    );
+    if (!search) return;
+
+    Router.push({ pathname: "/search", query: { query: search } });
   };
 
   // wait for theme hook (check ./hooks)
@@ -124,10 +149,22 @@ function Navbar({ setExpand }: INavbar) {
       </Link>
 
       {/* form on desktop */}
-      <DesktopForm />
+      {!isMobile && (
+        <DesktopForm
+          search={search}
+          setSearch={setSearch}
+          handleSubmit={handleSubmit}
+        />
+      )}
 
       {/* form on mobile */}
-      <MobileForm />
+      {mobileInput && isMobile && (
+        <MobileForm
+          search={search}
+          setSearch={setSearch}
+          handleSubmit={handleSubmit}
+        />
+      )}
 
       {/* account */}
       <div className={styles.userOptionContainer}>
@@ -136,7 +173,7 @@ function Navbar({ setExpand }: INavbar) {
           {/* search icon on mobile */}
           <div>
             <BsSearch
-              onClick={() => setMobileSearch(!mobileSearch)}
+              onClick={() => setMobileInput(!mobileInput)}
               title="search"
               className={styles.mobileSearch}
             />

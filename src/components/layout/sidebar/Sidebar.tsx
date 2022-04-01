@@ -12,12 +12,8 @@ import { AiFillHome, AiFillLike } from "react-icons/ai";
 import { MdSubscriptions } from "react-icons/md";
 import { FaDog, FaCat } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
-<<<<<<< HEAD
-import Link from "next/link";
-=======
 import { IoMdFootball } from "react-icons/io";
 
->>>>>>> sidebar
 import { useStore } from "../../../store/store";
 
 type ISidebar = {

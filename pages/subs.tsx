@@ -13,7 +13,7 @@ import { IVideo } from "../interface";
 
 import { getSubscriptions } from "../utils/fetch_from_youtube";
 
-import styles from "../styles/Subs.module.scss";
+import styles from "../styles/pages/Subs.module.scss";
 import spinnerGif from "../public/spinner.gif";
 import subsImage from "../public/subs.png";
 import { FaRegUserCircle } from "react-icons/fa";

@@ -1,8 +1,7 @@
+import { useRouter } from "next/router";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import TimeAgo from "react-timeago";
-import { getChannelImage } from "../../../utils/fetch_from_youtube";
-
 import ContentLoader from "react-content-loader";
 
 import styles from "./VideoCard.module.scss";
@@ -11,6 +10,7 @@ import spinnerGif from "../../../public/spinner.gif";
 import { viewsFormatter } from "../../../utils/format_video_views";
 import { useTheme } from "next-themes";
 import { useMounted } from "../../hooks/useMounted";
+import { IVideoCard } from "../../../interface";
 
 // skeleton when loading data
 const Skeleton = () => {
@@ -35,72 +35,133 @@ const Skeleton = () => {
   );
 };
 
-type IVideoCard = {
-  title: string;
-  thumbnail: string;
-  desc: string;
-  channelId: string;
-  channelName: string;
-  date: string;
-  views: string;
-};
-
-function VideoCard({
-  title,
-  thumbnail,
-  desc,
-  channelId,
-  channelName,
-  date,
-  views,
-}: IVideoCard) {
-  // to display skeleton when loading data
-  const [loaded, setLoading] = useState(false);
-
-  // get the channel image
-  const [image, setImage] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      const channel_image_url: string = await getChannelImage(channelId);
-
-      setImage(channel_image_url);
-      setLoading(true);
-    })();
-  });
-
-  // format date, ex: "2 days ago"
-  const dateFormated = <TimeAgo date={date} />;
-
-  // format the view count, ex: "1000 views" to "1k views"
-  const viewsFormated = viewsFormatter(views);
-
-  return !loaded ? (
-    <Skeleton />
-  ) : (
+// home card if on home page
+const HomeCard = (props: IVideoCard) => {
+  return (
     <div className={styles.card}>
       {/* thumbnail */}
       <div className={styles.thumbnail}>
-        <Image src={thumbnail} alt="thumbnail" layout="fill" />
+        <Image
+          src={props.thumbnail}
+          alt="thumbnail"
+          layout="fill"
+          quality={100}
+        />
       </div>
 
       {/* info about video */}
       <div className={styles.detailsSection}>
         {/* channel image */}
         <div className={styles.channelImage}>
-          <Image src={image || spinnerGif} alt="" width={42} height={42} />
+          <Image src={props.channelImage || spinnerGif} alt="" layout="fill" />
         </div>
 
         {/* title - channel name - date */}
         <div className={styles.details}>
-          <h4>{title}</h4>
-          <p>{channelName}</p>
+          <h4>{props.title}</h4>
+          <p>{props.channelName}</p>
           <p>
-            {viewsFormated} views • {dateFormated}
+            {props.views} views • {props.date}
           </p>
         </div>
       </div>
     </div>
+  );
+};
+
+// search card if on search page
+const SearchCard = (props: IVideoCard) => {
+  return (
+    <div className={styles.searchCard}>
+      {/* thumbnail */}
+      <div className={styles.thumbnail}>
+        <Image
+          src={props.thumbnail}
+          alt="thumbnail"
+          layout="fill"
+          quality={100}
+        />
+      </div>
+
+      {/* details */}
+      <div className={styles.details}>
+        {/* title */}
+        <h3>{props.title}</h3>
+
+        {/* views - date */}
+        <p>
+          {props.views} views • {props.date}
+        </p>
+
+        {/* channel */}
+        <div className={styles.channel}>
+          {/* channel Image */}
+          <Image
+            src={(props.channelImage as string) || spinnerGif}
+            alt="channel image"
+            width={20}
+            height="20"
+          />
+
+          {/* channel name */}
+          <span>{props.channelName}</span>
+        </div>
+
+        {/* desc */}
+        <p className={styles.desc}>{props.desc}</p>
+      </div>
+    </div>
+  );
+};
+
+function VideoCard({
+  title,
+  thumbnail,
+  desc,
+  channelImage,
+  channelName,
+  date,
+  views,
+}: IVideoCard) {
+  // to display skeleton when loading data
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (views && thumbnail && channelImage) {
+      setLoaded(true);
+    }
+  }, [views, thumbnail, channelImage]);
+
+  // format date, ex: "2 days ago"
+  const dateFormatted = <TimeAgo date={date as string} />;
+
+  // format the view count, ex: "1000 views" to "1k views"
+  const viewsFormatted = viewsFormatter(views);
+
+  // to render either home card, search card or related card based on pathname
+  const { pathname } = useRouter();
+
+  return !loaded ? (
+    <Skeleton />
+  ) : pathname === "/search" ? (
+    <SearchCard
+      title={title}
+      channelName={channelName}
+      channelImage={channelImage}
+      thumbnail={thumbnail}
+      desc={desc}
+      date={dateFormatted}
+      views={viewsFormatted}
+    />
+  ) : (
+    <HomeCard
+      title={title}
+      channelName={channelName}
+      channelImage={channelImage}
+      thumbnail={thumbnail}
+      date={dateFormatted}
+      views={viewsFormatted}
+    />
   );
 }
 

@@ -1,7 +1,7 @@
 # Todo
 
-finish subs dark mode styling
-test subs last children position
+fix videocard test
+move channel image logic from videocard to fetch_from_youtube
 finish sidebar functionality (may use zustand for category keyword: cats, dogs)
 
 stop rerendering navbar and sidebar (maybe layout component as well)

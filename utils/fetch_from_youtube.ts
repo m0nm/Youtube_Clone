@@ -12,7 +12,7 @@ const key: string = process.env.NEXT_PUBLIC_YOUTUBE_KEY as string;
 const baseParams = {
   key,
   part: "snippet",
-  maxResults: 1,
+  maxResults: 12,
 };
 
 // < -------- * --------- >
@@ -33,7 +33,9 @@ export const getPopularVideos = async (
 
     const { items, nextPageToken } = await res.data;
 
-    return { items, nextPageToken };
+    const videos = await get_Videos_Stats_And_ChannelImg(items, false);
+
+    return { videos, nextPageToken };
   } catch (error: any) {
     console.log(error.response.data.error);
     return error.response && error.response.status;
@@ -57,7 +59,7 @@ export const searchVideos = async (
     const res = await axios.get(baseUrl + "/search", { params });
     const { items, nextPageToken } = await res.data;
 
-    const videos = await getVideosStatistics(items);
+    const videos = await get_Videos_Stats_And_ChannelImg(items, true);
 
     return { videos, nextPageToken };
   } catch (error: any) {
@@ -66,30 +68,42 @@ export const searchVideos = async (
   }
 };
 
-// this is to get videos statistics (views) because "search" resource doesn't provide statistics
-const getVideosStatistics = async (videos: IVideo[]) => {
-  const videosWithStatistics = Promise.all(
+// this is to get videos statistics and channel image (views) because "searchs, videos" resources doesn't provide statistics
+const get_Videos_Stats_And_ChannelImg = async (
+  videos: IVideo[],
+  getStatistics: boolean
+) => {
+  const changedVideos = Promise.all(
     videos.map(async (video: IVideo) => {
-      const videoId = typeof video.id === "object" && video.id.videoId;
+      // fetch statistics
+      if (getStatistics) {
+        const videoId = typeof video.id === "object" && video.id.videoId;
 
-      const res = await axios.get(baseUrl + "/videos", {
-        params: { ...baseParams, part: "statistics", id: videoId },
-      });
+        const res = await axios.get(baseUrl + "/videos", {
+          params: { ...baseParams, part: "statistics", id: videoId },
+        });
 
-      const { items } = await res.data;
+        const { items } = await res.data;
 
-      video.statistics = await items[0].statistics;
+        video.statistics = await items[0].statistics;
+      }
+
+      // fetch channel image
+      const { channelId } = video.snippet;
+      const channelImage = await get_Channel_Image(channelId);
+
+      video.snippet.channelImage = channelImage;
 
       return video;
     })
   );
 
-  return videosWithStatistics;
+  return changedVideos;
 };
 
 // < -------- * --------- >
 // Get the channel image
-export const getChannelImage = async (channelId: string) => {
+export const get_Channel_Image = async (channelId: string) => {
   const url = baseUrl + "/channels";
   const params = {
     ...baseParams,

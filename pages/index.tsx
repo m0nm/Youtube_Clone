@@ -10,12 +10,9 @@ import { getPopularVideos, searchVideos } from "../utils/fetch_from_youtube";
 
 import { IVideo } from "../interface";
 
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/pages/Home.module.scss";
 import Router from "next/router";
 
-type IHome = {
-  data: { items: IVideo[]; nextPageToken: string };
-};
 const Home = () => {
   // < -------- * -------- >
   // videos, page token
@@ -30,14 +27,14 @@ const Home = () => {
     // this is to cancel request if user clicks on another category before fetching is finished
     let mounted = true;
 
-    const fetchCategoryVideos = async () => {
+    const fetchVideos = async () => {
       let data = [];
 
       // if the active category is "All" then get the popular videos
       if (category === "All") {
         data = await getPopularVideos();
         pageTokenRef.current = data?.nextPageToken;
-        mounted && setVideos(await data?.items);
+        mounted && setVideos(await data?.videos);
         return false;
       }
 
@@ -52,7 +49,7 @@ const Home = () => {
       }
     };
 
-    fetchCategoryVideos();
+    fetchVideos();
 
     return () => {
       mounted = false;
@@ -65,7 +62,7 @@ const Home = () => {
     // more popular videos
     if (category === "All") {
       const res = await getPopularVideos(undefined, pageTokenRef.current);
-      const newVideos = await res?.items;
+      const newVideos = await res?.videos;
 
       setVideos(videos.concat(newVideos));
       pageTokenRef.current = res?.nextPageToken;
@@ -86,7 +83,7 @@ const Home = () => {
     return videos.map((video: IVideo) => {
       const id = typeof video.id === "string" ? video.id : video.id.videoId;
       const title = video.snippet.title || video.snippet.localized.title;
-      const channelId = video.snippet.channelId;
+      const channelImage = video.snippet.channelImage;
       const channelName = video.snippet.channelTitle;
       const thumbnail = video.snippet.thumbnails.medium.url;
       const date = video.snippet.publishedAt;
@@ -98,7 +95,7 @@ const Home = () => {
         <VideoCard
           key={id}
           title={title}
-          channelId={channelId}
+          channelImage={channelImage}
           channelName={channelName}
           thumbnail={thumbnail}
           date={date}

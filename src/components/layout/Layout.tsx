@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./navbar/Navbar";
 import Sidebar from "./sidebar/Sidebar";
 
-import styles from "../../../styles/Layout.module.scss";
+import styles from "../../../styles/pages/Layout.module.scss";
 
 function Layout({ children }: { children: JSX.Element }) {
   // for mobile: expand sidebar on menu click
