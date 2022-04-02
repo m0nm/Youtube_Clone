@@ -12,7 +12,7 @@ const key: string = process.env.NEXT_PUBLIC_YOUTUBE_KEY as string;
 const baseParams = {
   key,
   part: "snippet",
-  maxResults: 12,
+  maxResults: 6,
 };
 
 // < -------- * --------- >
@@ -45,7 +45,7 @@ export const getPopularVideos = async (
 // < -------- * --------- >
 // search for videos
 export const searchVideos = async (
-  query: string | undefined,
+  query: string | string[] | undefined,
   page: string = ""
 ) => {
   let params = {

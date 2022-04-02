@@ -109,7 +109,7 @@ function Subs({ session, data }: ISubs) {
             dataLength={channels.length}
             next={fetchMoreChannels}
             hasMore={hasMore.current}
-            loader="loadi"
+            loader=""
           >
             {channels.map((item) => {
               const id = item.id;

@@ -4,11 +4,11 @@
 .container {
   width: 100%;
   padding-top: 2rem;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 40%);
   justify-content: center;
   gap: 1rem;
+  overflow: hidden !important;
 
   @media (max-width: $breakpoint) {
     flex-direction: column;
@@ -16,7 +16,6 @@
 }
 
 .card {
-  width: 40%;
   height: 120px;
   padding: 10px;
   display: flex;
@@ -35,11 +34,6 @@
     background-position: left bottom;
     z-index: 4;
     cursor: pointer;
-  }
-
-  &:last-child {
-    margin-right: auto;
-    margin-left: 7.25rem;
   }
 
   @media (max-width: $breakpoint) {
@@ -77,6 +71,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: 3px;
   }
 }
 
