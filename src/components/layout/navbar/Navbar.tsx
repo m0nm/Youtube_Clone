@@ -112,6 +112,9 @@ function Navbar({ setExpand }: INavbar) {
     if (!search) return;
 
     Router.push({ pathname: "/search", query: { query: search } });
+
+    // if searched from mobile
+    isMobile && setMobileInput(false);
   };
 
   // wait for theme hook (check ./hooks)

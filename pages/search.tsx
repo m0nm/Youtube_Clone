@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { GetServerSideProps } from "next";
-import React, { Key, useRef, useState } from "react";
+import React, { Key, useEffect, useRef, useState } from "react";
 import { IVideo } from "../interface";
 import { searchVideos } from "../utils/fetch_from_youtube";
 import VideoCard from "../src/components/video-card/VideoCard";
@@ -29,7 +29,18 @@ function Search({ data }: ISearch) {
   const [videos, setVideos] = useState<IVideo[]>(items);
   const pageTokenRef = useRef(nextPageToken);
 
+  // for next search attempt on same page
   const { query } = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const res = await searchVideos(query.query);
+
+      pageTokenRef.current = await res.nextPageToken;
+      setVideos(await res.videos);
+      console.log("query", query.query);
+    })();
+  }, [query.query]);
 
   // for infinite sccroll
   const fetchMoreVideos = async () => {
