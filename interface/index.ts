@@ -1,6 +1,10 @@
 export type IVideo = {
   id: { videoId: string } | string;
-  statistics: { viewCount: string };
+  statistics: {
+    viewCount: string;
+    likeCount?: string;
+    subscriberCount?: string;
+  };
   snippet: {
     localized: {
       title: string;
@@ -19,11 +23,27 @@ export type IVideo = {
 };
 
 export type IVideoCard = {
+  videoId: string;
   title: string;
   thumbnail: string;
   desc?: string;
   channelName: string;
   channelImage?: string;
-  date: string | JSX.Element;
+  date: string | JSX.Element | Date;
   views: string;
+};
+
+export type IComment = {
+  id: string;
+  snippet: {
+    topLevelComment: {
+      snippet: {
+        authorDisplayName: string;
+        authorProfileImageUrl: string;
+        textDisplay: string;
+        publishedAt: string;
+        likeCount: string;
+      };
+    };
+  };
 };

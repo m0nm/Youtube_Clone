@@ -19,7 +19,6 @@ const styles = {
   width: "100%",
   display: "flex",
   flexDirection: "column" as "column",
-  alignItems: "center",
   paddingTop: "4rem",
 };
 
@@ -38,7 +37,6 @@ function Search({ data }: ISearch) {
 
       pageTokenRef.current = await res.nextPageToken;
       setVideos(await res.videos);
-      console.log("query", query.query);
     })();
   }, [query.query]);
 
@@ -58,8 +56,8 @@ function Search({ data }: ISearch) {
         <title>Youtube Clone | Search</title>
       </Head>
 
-      {!videos.length ? (
-        <div style={styles}>
+      {!videos?.length ? (
+        <div style={{ ...styles, alignItems: "center" }}>
           <h1 style={{ fontSize: "150px" }}>404</h1>
           <h1>No results found</h1>
           <br />
@@ -86,6 +84,7 @@ function Search({ data }: ISearch) {
             return (
               <VideoCard
                 key={id as Key}
+                videoId={id as string}
                 title={title}
                 channelImage={channelImage}
                 channelName={channelName}
@@ -107,7 +106,17 @@ export default Search;
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const data = await searchVideos(query.query as string);
 
+  if (data === 403) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+
   return {
+    // json methods to not get server error if data is undefined
     props: { data: JSON.parse(JSON.stringify(data)) },
   };
 };

@@ -49,7 +49,9 @@ const Home = () => {
       }
     };
 
-    fetchVideos();
+    try {
+      fetchVideos();
+    } catch (error) {}
 
     return () => {
       mounted = false;
@@ -94,6 +96,7 @@ const Home = () => {
       return (
         <VideoCard
           key={id}
+          videoId={id}
           title={title}
           channelImage={channelImage}
           channelName={channelName}
@@ -119,7 +122,7 @@ const Home = () => {
       {/* videos */}
       <InfiniteScroll
         className={styles.container}
-        dataLength={videos.length}
+        dataLength={videos?.length}
         next={fetchMoreVideos}
         hasMore={true}
         loader=""

@@ -1,0 +1,43 @@
+@use "../home-card/HomeCard.module.scss";
+
+// < -------- * -------- >
+// related video card on watch page
+.relatedCard {
+  @extend .card;
+  display: flex;
+  margin-bottom: 1rem;
+  width: 40vw;
+
+  // < -------- * -------- >
+  .thumbnail {
+    position: relative;
+    min-width: 180px;
+    max-width: 180px;
+    height: 110px;
+  }
+  // < -------- * -------- >
+  .detailsSection {
+    width: 90%;
+    margin-left: 10px;
+    place-items: start;
+
+    // title
+    h4 {
+      width: 100% !important;
+
+      // text elipsis on second line if supported
+      @supports (-webkit-line-clamp: 2) {
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    // channel name - views - date
+    p {
+      color: #818181;
+      margin-top: 5px;
+    }
+  }
+}

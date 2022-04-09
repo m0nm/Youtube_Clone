@@ -1,18 +1,18 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { IVideo } from "../interface";
 
 // Resources
 // videos: (get request) fetch a list of videos based on params
 // search: (get request) fetch a list of videos based on search query
 // channels: (get request) only used to get a channel image :/
-// comments: (post request) create a new comment
+// commentThread: (get request) get comments of video
 
 const baseUrl: string = "https://www.googleapis.com/youtube/v3";
 const key: string = process.env.NEXT_PUBLIC_YOUTUBE_KEY as string;
 const baseParams = {
   key,
   part: "snippet",
-  maxResults: 6,
+  maxResults: 12,
 };
 
 // < -------- * --------- >
@@ -33,11 +33,60 @@ export const getPopularVideos = async (
 
     const { items, nextPageToken } = await res.data;
 
-    const videos = await get_Videos_Stats_And_ChannelImg(items, false);
+    const videos = await get_vids_stats_channel_details(items, false);
 
     return { videos, nextPageToken };
   } catch (error: any) {
-    console.log(error.response.data.error);
+    console.log("popularVideos", error.response.data.error);
+    return error.response && error.response.status;
+  }
+};
+
+// < -------- * --------- >
+// get single video
+export const getVideoById = async (id: string) => {
+  const params = {
+    ...baseParams,
+    id,
+    part: "snippet,statistics",
+  };
+
+  try {
+    const res = await axios.get(baseUrl + "/videos", { params });
+
+    const { items } = await res.data;
+
+    const videosWithChannelImage = await get_vids_stats_channel_details(
+      items,
+      false
+    );
+    const video = videosWithChannelImage[0];
+    return { video };
+  } catch (error: any) {
+    console.log("videoById", error.response.data.error);
+    return error.response && error.response.status;
+  }
+};
+// < -------- * --------- >
+// get related videos of a video
+// there is a bug with pagination for related videos
+export const getRelatedVideos = async (id: string) => {
+  const params = {
+    ...baseParams,
+    relatedToVideoId: id,
+    type: "video",
+    maxResults: 20,
+  };
+
+  try {
+    const res = await axios.get(baseUrl + "/search", { params });
+    const { items, nextPageToken } = await res.data;
+
+    const videos = await get_vids_stats_channel_details(items, true);
+
+    return videos;
+  } catch (error: any) {
+    console.log("relatedVideos", error.response?.data.error);
     return error.response && error.response.status;
   }
 };
@@ -48,7 +97,7 @@ export const searchVideos = async (
   query: string | string[] | undefined,
   page: string = ""
 ) => {
-  let params = {
+  const params = {
     ...baseParams,
     q: query,
     pageToken: page,
@@ -59,22 +108,25 @@ export const searchVideos = async (
     const res = await axios.get(baseUrl + "/search", { params });
     const { items, nextPageToken } = await res.data;
 
-    const videos = await get_Videos_Stats_And_ChannelImg(items, true);
+    const videos = await get_vids_stats_channel_details(items, true);
 
     return { videos, nextPageToken };
   } catch (error: any) {
-    console.log(error.response.data.error);
+    console.log("searchVideos", error.response.data.error);
     return error.response && error.response.status;
   }
 };
 
-// this is to get videos statistics and channel image (views) because "searchs, videos" resources doesn't provide statistics
-const get_Videos_Stats_And_ChannelImg = async (
+// this is to get videos stats and channel details
+// because "searchs, videos" resources doesn't provide statistics or channel image
+const get_vids_stats_channel_details = async (
   videos: IVideo[],
   getStatistics: boolean
 ) => {
   const changedVideos = Promise.all(
     videos.map(async (video: IVideo) => {
+      if (!video.snippet) return null;
+
       // fetch statistics
       if (getStatistics) {
         const videoId = typeof video.id === "object" && video.id.videoId;
@@ -88,11 +140,13 @@ const get_Videos_Stats_And_ChannelImg = async (
         video.statistics = await items[0].statistics;
       }
 
-      // fetch channel image
+      // fetch channel image and subscribers count
       const { channelId } = video.snippet;
-      const channelImage = await get_Channel_Image(channelId);
+      const { image, subscriberCount } = await get_channel_details(channelId);
 
-      video.snippet.channelImage = channelImage;
+      video.snippet.channelImage = image;
+
+      video.statistics.subscriberCount = subscriberCount;
 
       return video;
     })
@@ -102,11 +156,12 @@ const get_Videos_Stats_And_ChannelImg = async (
 };
 
 // < -------- * --------- >
-// Get the channel image
-export const get_Channel_Image = async (channelId: string) => {
+// Get the channel image and subscribers count
+export const get_channel_details = async (channelId: string) => {
   const url = baseUrl + "/channels";
   const params = {
     ...baseParams,
+    part: "snippet, statistics",
     id: channelId,
   };
 
@@ -114,7 +169,9 @@ export const get_Channel_Image = async (channelId: string) => {
 
   const image = await res.data.items[0].snippet.thumbnails.default.url;
 
-  return image;
+  const subscriberCount = await res.data?.items[0]?.statistics?.subscriberCount;
+
+  return { image, subscriberCount };
 };
 
 // < -------- * --------- >
@@ -141,7 +198,29 @@ export const getSubscriptions = async (
 
     return res.data;
   } catch (error: any) {
-    console.log(error.response.data.error);
+    console.log("getSubs", error.response.data.error);
+    return error.response && error.response.status;
+  }
+};
+
+// < -------- * --------- >
+// get comments of a video
+export const getComments = async (id: string) => {
+  const params = {
+    ...baseParams,
+    videoId: id,
+    maxResults: 20,
+    order: "relevance",
+  };
+
+  try {
+    const res = await axios.get(baseUrl + "/commentThreads", { params });
+
+    const { items } = await res.data;
+
+    return items;
+  } catch (error: any) {
+    console.log("getComments", error.response.data.error);
     return error.response && error.response.status;
   }
 };

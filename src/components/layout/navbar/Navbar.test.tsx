@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { Context as ResponsiveContext } from "react-responsive";
 import userEvent from "@testing-library/user-event";
 import Navbar from "./Navbar";
@@ -21,6 +21,20 @@ describe("<Navbar />", () => {
     const searchInput = screen.getByRole("textbox");
 
     expect(searchInput).toHaveValue("");
+  });
+
+  test("navbar input onchange", async () => {
+    setup(
+      <ResponsiveContext.Provider value={{ width: "1300" }}>
+        <Navbar setExpand={() => {}} />
+      </ResponsiveContext.Provider>
+    );
+
+    const searchInput = screen.getByRole("textbox");
+
+    await userEvent.type(searchInput, "hello world");
+
+    expect(searchInput).toHaveValue("hello world");
   });
 
   test("mobile navbar search input appear on clicking search icon", async () => {
@@ -50,5 +64,25 @@ describe("<Navbar />", () => {
     const button = screen.queryByText("SIGN IN");
 
     expect(button).not.toBeInTheDocument();
+  });
+
+  test("navbar logo renders correctly on dark theme", () => {
+    // on dark theme
+    setup(<Navbar setExpand={() => {}} />, undefined, "dark");
+
+    waitFor(async () => {
+      const logo = await screen.getByAltText(/youtube logo dark/i);
+      expect(logo).toBeInTheDocument();
+    });
+  });
+
+  test("navbar logo renders correctly on light theme", () => {
+    // on light theme
+    setup(<Navbar setExpand={() => {}} />, undefined, "light");
+
+    waitFor(async () => {
+      const logo = await screen.queryByAltText(/youtube logo dark/i);
+      expect(logo).not.toBeInTheDocument();
+    });
   });
 });

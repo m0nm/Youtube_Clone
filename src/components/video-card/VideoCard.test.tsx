@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import VideoCard from "./VideoCard";
 
 jest.mock("next/router", () => ({
@@ -18,6 +17,7 @@ describe("<VideoCard />", () => {
   test("VideoCard renders correctly", () => {
     render(
       <VideoCard
+        videoId="Ks-_Mh1QhMc"
         desc="some-desc"
         thumbnail="some-thumbnail"
         date="Mar 23, 2022"

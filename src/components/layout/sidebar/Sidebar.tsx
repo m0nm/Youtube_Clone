@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 import { useMounted } from "../../../hooks/useMounted";
 import { useMediaQuery } from "react-responsive";
 
-import { AiFillHome, AiFillLike } from "react-icons/ai";
+import { AiFillHome } from "react-icons/ai";
 import { MdSubscriptions } from "react-icons/md";
 import { FaDog, FaCat } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
