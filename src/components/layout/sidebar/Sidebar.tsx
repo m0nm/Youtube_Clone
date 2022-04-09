@@ -49,7 +49,7 @@ function Sidebar({ expand }: ISidebar) {
     >
       {/* home */}
       <Link passHref href="/">
-        <div onClick={() => window.location.reload()} className={styles.item}>
+        <div className={styles.item}>
           <AiFillHome />
           <p>Home</p>
         </div>

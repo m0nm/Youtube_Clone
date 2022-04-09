@@ -211,6 +211,7 @@ export const getComments = async (id: string) => {
     videoId: id,
     maxResults: 20,
     order: "relevance",
+    textFormat: "plainText",
   };
 
   try {

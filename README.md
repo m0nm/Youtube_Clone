@@ -1,8 +1,5 @@
 # Todo
 
-set getRelatedVideos maxResult to 20 when mergin to main
-set maxResutls to 12 when mergin to main
-
 add responsive style to watch page
 create channel page
 

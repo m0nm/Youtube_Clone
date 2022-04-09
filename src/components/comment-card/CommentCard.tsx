@@ -34,13 +34,15 @@ function CommentCard({ author, avatar, date, comment, likeCount }: ICard) {
 
       {/* details */}
       <div className={styles.details}>
-        {/* author */}
-        <span>{author}</span>
-        {/* date */}
-        <span>{dateFormatted}</span>
+        <div>
+          {/* author */}
+          <p>{author}</p>
+          {/* date */}
+          <span>{dateFormatted}</span>
+        </div>
 
         {/* comment */}
-        <p>{comment}</p>
+        <p className={styles.comment}>{comment}</p>
 
         {/* likes */}
         <div className={styles.likes}>

@@ -1,7 +1,8 @@
 .container {
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   margin-left: 1rem;
+  margin-bottom: 1rem;
   display: flex;
 }
 
@@ -23,10 +24,20 @@
   margin-left: 1rem;
   font-size: 14px;
   // author name
-  span:first-child {
+  div:first-child {
     font-weight: 500;
     cursor: pointer;
     margin-right: 5px;
+    display: flex;
+    align-items: center;
+
+    p {
+      margin-right: 5px;
+      max-width: 400px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   span:not(:first-child) {
@@ -34,7 +45,7 @@
   }
 
   // comment
-  p {
+  .comment {
     margin: 5px 0 10px 0;
   }
 
