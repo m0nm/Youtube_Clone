@@ -1,3 +1,4 @@
+@use "../../../../styles/variables" as *;
 @use "../home-card/HomeCard.module.scss";
 
 // < -------- * -------- >
@@ -21,16 +22,22 @@
     margin-left: 10px;
     place-items: start;
 
+    .details {
+      width: 100%;
+    }
+
     // title
     h4 {
-      width: 100% !important;
-
       // text elipsis on second line if supported
       @supports (-webkit-line-clamp: 2) {
         white-space: initial;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+      }
+
+      @media (max-width: $breakpoint) {
+        width: max-content;
       }
     }
 

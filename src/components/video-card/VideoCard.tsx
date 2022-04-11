@@ -25,6 +25,7 @@ const Skeleton = () => {
       viewBox="0 0 500 420"
       height={250}
       width={300}
+      uniqueKey={"some_unique_id_5frzfg4"}
     >
       <rect x="16" y="17" rx="0" ry="0" width="100%" height="250px" />
       <circle cx="45" cy="320" r="35" />
