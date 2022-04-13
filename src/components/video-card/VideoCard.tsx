@@ -39,6 +39,7 @@ function VideoCard({
   title,
   thumbnail,
   desc,
+  channelId,
   channelImage,
   channelName,
   date,
@@ -64,45 +65,52 @@ function VideoCard({
   const { pathname, push } = useRouter();
 
   // send to watch page
-  const handleClick = () => {
+  const handleWatch = () => {
     push({ pathname: "/watch", query: { v: videoId } });
+  };
+
+  // send to channel page on channel click
+  const handleChannel = () => {
+    push({ pathname: "/channel", query: { id: channelId } });
   };
 
   return !loaded ? (
     <Skeleton />
+  ) : pathname === "/search" ? (
+    <SearchCard
+      videoId={videoId}
+      title={title}
+      channelName={channelName}
+      channelImage={channelImage}
+      thumbnail={thumbnail}
+      desc={desc}
+      date={dateFormatted}
+      views={viewsFormatted}
+      handleWatch={handleWatch}
+      handleChannel={handleChannel}
+    />
+  ) : pathname === "/watch" ? (
+    <RelatedCard
+      title={title}
+      channelName={channelName}
+      thumbnail={thumbnail}
+      date={dateFormatted}
+      views={viewsFormatted}
+      handleWatch={handleWatch}
+      handleChannel={handleChannel}
+    />
   ) : (
-    <div onClick={handleClick}>
-      {pathname === "/search" ? (
-        <SearchCard
-          videoId={videoId}
-          title={title}
-          channelName={channelName}
-          channelImage={channelImage}
-          thumbnail={thumbnail}
-          desc={desc}
-          date={dateFormatted}
-          views={viewsFormatted}
-        />
-      ) : pathname === "/watch" ? (
-        <RelatedCard
-          title={title}
-          channelName={channelName}
-          thumbnail={thumbnail}
-          date={dateFormatted}
-          views={viewsFormatted}
-        />
-      ) : (
-        <HomeCard
-          videoId={videoId}
-          title={title}
-          channelName={channelName}
-          channelImage={channelImage}
-          thumbnail={thumbnail}
-          date={dateFormatted}
-          views={viewsFormatted}
-        />
-      )}
-    </div>
+    <HomeCard
+      videoId={videoId}
+      title={title}
+      channelName={channelName}
+      channelImage={channelImage}
+      thumbnail={thumbnail}
+      date={dateFormatted}
+      views={viewsFormatted}
+      handleWatch={handleWatch}
+      handleChannel={handleChannel}
+    />
   );
 }
 

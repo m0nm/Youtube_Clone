@@ -10,7 +10,7 @@ export const SearchCard = (props: IVideoCard) => {
   return (
     <div className={styles.searchCard}>
       {/* thumbnail */}
-      <div className={styles.thumbnail}>
+      <div onClick={props.handleWatch} className={styles.thumbnail}>
         <Image
           src={props.thumbnail}
           alt="thumbnail"
@@ -22,7 +22,7 @@ export const SearchCard = (props: IVideoCard) => {
       {/* details */}
       <div className={styles.details}>
         {/* title */}
-        <h3>{props.title}</h3>
+        <h3 onClick={props.handleWatch}>{props.title}</h3>
 
         {/* views - date */}
         <p>
@@ -30,7 +30,7 @@ export const SearchCard = (props: IVideoCard) => {
         </p>
 
         {/* channel */}
-        <div className={styles.channel}>
+        <div onClick={props.handleChannel} className={styles.channel}>
           {/* channel Image */}
           <Image
             src={(props.channelImage as string) || spinnerGif}

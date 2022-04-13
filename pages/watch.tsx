@@ -18,6 +18,7 @@ import VideoCard from "../src/components/video-card/VideoCard";
 import { AiOutlineLike } from "react-icons/ai";
 import { dateFormatter, numbersFormatter } from "../utils/format_numbers_date";
 import styles from "../styles/pages/Watch.module.scss";
+import { useRouter } from "next/router";
 // < -------- * -------- >
 
 type IWatch = {
@@ -29,6 +30,7 @@ type IWatch = {
 function Watch({ video, relatedVideos, comments }: IWatch) {
   const videoId = typeof video.id === "string" ? video.id : video.id.videoId;
   const title = video.snippet.title || video.snippet.localized.title;
+  const channelId = video.snippet.channelId;
   const channelImage = video.snippet.channelImage;
   const channelName = video.snippet.channelTitle;
   const desc =
@@ -47,6 +49,12 @@ function Watch({ video, relatedVideos, comments }: IWatch) {
 
   // format like count, ex: 1000 to 1k
   const likes = numbersFormatter(video.statistics?.likeCount as string);
+
+  // push to channel page on channel click
+  const { push } = useRouter();
+  const handleChannel = () => {
+    push({ pathname: "/channel", query: { id: channelId } });
+  };
 
   return (
     <div className={styles.container}>
@@ -84,13 +92,13 @@ function Watch({ video, relatedVideos, comments }: IWatch) {
         {/* channel and details */}
         <div className={styles.channel}>
           {/* channel image */}
-          <div>
+          <div onClick={handleChannel}>
             <Image src={channelImage} alt="channel image" layout="fill" />
           </div>
 
           <div>
             {/* channel name, subscribers count  */}
-            <p>{channelName}</p>
+            <p onClick={handleChannel}>{channelName}</p>
             <p>{subscriberCount} subscribers</p>
 
             {/* desc */}
@@ -131,6 +139,7 @@ function Watch({ video, relatedVideos, comments }: IWatch) {
           const id = typeof video.id === "object" && video.id?.videoId;
           const title = video.snippet?.title;
           const channelName = video.snippet?.channelTitle;
+          const channelId = video.snippet.channelId;
           const thumbnail = video.snippet?.thumbnails.medium.url;
           const date = video.snippet?.publishedAt;
           const views = numbersFormatter(video.statistics?.viewCount);
@@ -140,6 +149,7 @@ function Watch({ video, relatedVideos, comments }: IWatch) {
               key={id as Key}
               videoId={id as string}
               title={title}
+              channelId={channelId as string}
               channelName={channelName}
               thumbnail={thumbnail}
               date={date}

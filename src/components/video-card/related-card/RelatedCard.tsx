@@ -10,13 +10,15 @@ type IRelatedCard = {
   channelName: string;
   date: JSX.Element | string;
   views: string;
+  handleWatch: () => void;
+  handleChannel: () => void;
 };
 
 function RelatedCard(props: IRelatedCard) {
   return (
     <div className={styles.relatedCard}>
       {/* thumbnail */}
-      <div className={styles.thumbnail}>
+      <div onClick={props.handleWatch} className={styles.thumbnail}>
         <Image
           src={props.thumbnail}
           alt="thumbnail"
@@ -29,14 +31,16 @@ function RelatedCard(props: IRelatedCard) {
       <div className={styles.detailsSection}>
         {/* title - channel name - date */}
         <div className={styles.details}>
-          <h4 data-tip={props.title}>{props.title}</h4>
+          <h4 onClick={props.handleWatch} data-tip={props.title}>
+            {props.title}
+          </h4>
           <ReactTooltip
             place="bottom"
             delayShow={300}
             offset={{ bottom: 0, right: 0 }}
           />
 
-          <p>{props.channelName}</p>
+          <p onClick={props.handleChannel}>{props.channelName}</p>
           <p>
             {props.views} views • {props.date}
           </p>

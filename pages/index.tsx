@@ -85,6 +85,7 @@ const Home = () => {
     return videos.map((video: IVideo) => {
       const id = typeof video.id === "string" ? video.id : video.id.videoId;
       const title = video.snippet.title || video.snippet.localized.title;
+      const channelId = video.snippet.channelId;
       const channelImage = video.snippet.channelImage;
       const channelName = video.snippet.channelTitle;
       const thumbnail = video.snippet.thumbnails.medium.url;
@@ -98,6 +99,7 @@ const Home = () => {
           key={id}
           videoId={id}
           title={title}
+          channelId={channelId}
           channelImage={channelImage}
           channelName={channelName}
           thumbnail={thumbnail}

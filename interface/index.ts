@@ -10,6 +10,7 @@ export type IVideo = {
       title: string;
       description: string;
     };
+
     title: string;
     description: string;
     channelId: string;
@@ -18,6 +19,10 @@ export type IVideo = {
     publishedAt: string;
     thumbnails: {
       medium: { url: string };
+    };
+
+    resourceId?: {
+      channelId: string;
     };
   };
 };
@@ -29,8 +34,11 @@ export type IVideoCard = {
   desc?: string;
   channelName: string;
   channelImage?: string;
+  channelId?: string;
   date: string | JSX.Element | Date;
   views: string;
+  handleWatch?: () => void;
+  handleChannel?: () => void;
 };
 
 export type IComment = {
@@ -45,5 +53,20 @@ export type IComment = {
         likeCount: string;
       };
     };
+  };
+};
+
+export type IPlaylistVideo = {
+  snippet: {
+    resourceId: {
+      videoId: string;
+    };
+
+    thumbnails: {
+      medium: { url: string };
+    };
+
+    title: string;
+    publishedAt: string;
   };
 };

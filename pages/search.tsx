@@ -75,6 +75,7 @@ function Search({ data }: ISearch) {
             const id = typeof video.id === "object" && video.id.videoId;
             const title = video.snippet.title;
             const thumbnail = video.snippet.thumbnails.medium.url;
+            const channelId = video.snippet.channelId;
             const channelName = video.snippet.channelTitle;
             const channelImage = video.snippet.channelImage;
             const date = video.snippet.publishedAt;
@@ -86,6 +87,7 @@ function Search({ data }: ISearch) {
                 key={id as Key}
                 videoId={id as string}
                 title={title}
+                channelId={channelId as string}
                 channelImage={channelImage}
                 channelName={channelName}
                 thumbnail={thumbnail}

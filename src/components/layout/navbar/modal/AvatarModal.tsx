@@ -9,7 +9,7 @@ function AvatarModal() {
   return (
     <div className={styles.modal}>
       <div onClick={() => signOut()} className={styles.firstSection}>
-        <GrLogout />
+        <GrLogout className={styles.signOutSvg} />
         <span>Sign Out</span>
       </div>
     </div>

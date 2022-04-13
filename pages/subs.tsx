@@ -17,6 +17,7 @@ import styles from "../styles/pages/Subs.module.scss";
 import spinnerGif from "../public/spinner.gif";
 import subsImage from "../public/subs.png";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 // < -------- * ------- >
 // skeleton when loading data
@@ -80,6 +81,12 @@ function Subs({ session, data }: ISubs) {
   };
 
   // < -------- * ------- >
+  // push to channel page
+  const { push } = useRouter();
+  const handleChannel = (channelId: string) => {
+    push({ pathname: "/channel", query: { id: channelId } });
+  };
+  // < -------- * ------- >
   return (
     mounted && (
       <>
@@ -113,6 +120,7 @@ function Subs({ session, data }: ISubs) {
           >
             {channels.map((item) => {
               const id = item.id;
+              const channelId = item.snippet.resourceId?.channelId;
               const channelName = item.snippet.title;
               const channelImage = item.snippet.thumbnails.medium.url;
               const desc = item.snippet.description;
@@ -120,7 +128,11 @@ function Subs({ session, data }: ISubs) {
               return !items ? (
                 <Skeleton />
               ) : (
-                <div className={styles.card} key={id as Key}>
+                <div
+                  onClick={() => handleChannel(channelId as string)}
+                  className={styles.card}
+                  key={id as Key}
+                >
                   {/* channel image */}
                   <div className={styles.channelImage}>
                     <Image

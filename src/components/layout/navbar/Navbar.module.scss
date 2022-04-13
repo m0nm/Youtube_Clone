@@ -266,6 +266,11 @@
   .modal {
     background-color: #212121;
 
+    // avatar modal sign out svg
+    .signOutSvg {
+      filter: invert(100);
+    }
+
     .firstSection:hover {
       background-color: #2b2b2b;
     }

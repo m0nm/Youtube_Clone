@@ -225,3 +225,61 @@ export const getComments = async (id: string) => {
     return error.response && error.response.status;
   }
 };
+
+// < -------- * --------- >
+// get channel upload videos
+export const getChannelVideos = async (
+  channelId: string,
+  pageToken: string = ""
+) => {
+  const channelParams = {
+    key,
+    part: "snippet,contentDetails,statistics",
+    id: channelId,
+  };
+
+  try {
+    const channelRes = await axios.get(baseUrl + "/channels", {
+      params: channelParams,
+    });
+
+    const { items } = await channelRes.data;
+
+    // channel title
+    const channelName = await items[0].snippet.title;
+
+    // channel image
+    const channelImage = await items[0].snippet.thumbnails.high.url;
+
+    // channel subs count
+    const { subscriberCount } = await items[0].statistics;
+
+    // playlist id
+    const playlistId = await items[0].contentDetails.relatedPlaylists.uploads;
+
+    // get the uploads playlist
+    const playlistParams = {
+      ...baseParams,
+      playlistId,
+      pageToken,
+    };
+
+    const playlistRes = await axios.get(baseUrl + "/playlistItems", {
+      params: playlistParams,
+    });
+
+    const videos = await playlistRes.data.items;
+    const { nextPageToken } = await playlistRes.data;
+
+    return {
+      videos,
+      channelName,
+      channelImage,
+      subscriberCount,
+      nextPageToken,
+    };
+  } catch (error: any) {
+    console.log("getChannelVideos", error.response?.data.error);
+    return error.response && error.response.status;
+  }
+};
