@@ -39,23 +39,11 @@
   transform: scale(0.4);
   position: relative;
 }
-// -------- * ---------
-.formContainer {
-  height: 100%;
-  width: 100px;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  transform: scaleX(0.95);
-
-  @include mobile-display-handler(none);
-}
 
 // -------- * ---------
 .form {
   height: 2rem;
-  width: 100%;
-  margin: 0 auto;
+  width: 55%;
 
   input {
     border: 1px solid #d8d8d8;

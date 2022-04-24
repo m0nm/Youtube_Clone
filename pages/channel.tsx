@@ -53,6 +53,11 @@ function Channel({ data }: { data: IChannel }) {
       pageTokenRef.current
     );
 
+    // if quotas exeeded
+    if (res === 403) {
+      push("/500");
+    }
+
     pageTokenRef.current = await res.nextPageToken;
     const newVideos = await res.videos;
 
@@ -143,6 +148,16 @@ export default Channel;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const data = await getChannelVideos(query.id as string);
+
+  // if quotas exeeded
+  if (data === 403) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500",
+      },
+    };
+  }
 
   return {
     props: { data },

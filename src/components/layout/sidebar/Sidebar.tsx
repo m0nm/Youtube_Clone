@@ -34,7 +34,9 @@ function Sidebar({ expand }: ISidebar) {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" });
 
   // wait for theme hook (check ./hooks)
-  return !useMounted() ? null : (
+  const mounted = useMounted();
+
+  return !mounted ? null : (
     <aside
       style={
         isTabletOrMobile && expand

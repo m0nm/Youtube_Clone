@@ -35,8 +35,8 @@ export const SearchCard = (props: IVideoCard) => {
           <Image
             src={(props.channelImage as string) || spinnerGif}
             alt="channel image"
-            width={20}
-            height="20"
+            width={22}
+            height={22}
           />
 
           {/* channel name */}

@@ -3,14 +3,13 @@
 
 .container {
   z-index: 7;
-  width: 5rem;
+  width: 70px;
   height: 100vh;
   overflow: hidden;
   position: fixed;
   left: 0;
   background-color: $fg_light;
   transition: width 0.3s;
-  transform: scaleX(0.95);
 
   @media (max-width: $breakpoint) {
     width: 0;
@@ -22,7 +21,9 @@
 
       p {
         width: 60%;
+        margin-top: 0;
         margin-left: 1rem;
+        font-size: 14px;
       }
     }
 
@@ -54,12 +55,12 @@
   }
 
   svg {
-    font-size: 24px;
+    font-size: 23px;
   }
 
   p {
     margin-top: 10px;
-    font-size: 12px;
+    font-size: 10px;
     color: rgba(0, 0, 0, 0.7);
   }
 }

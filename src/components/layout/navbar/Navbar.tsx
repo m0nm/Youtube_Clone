@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
-import React, { SetStateAction, useCallback, useRef, useState } from "react";
+import React, { SetStateAction, useRef, useState } from "react";
+
 import { useTheme } from "next-themes";
 import { useSession, signIn } from "next-auth/react";
 
@@ -15,10 +16,11 @@ import spinnerGif from "./../../../../public/spinner.gif";
 import styles from "./Navbar.module.scss";
 
 import ThemeModal from "./modal/ThemeModal";
+import AvatarModal from "./modal/AvatarModal";
+
 import { useDetectOutsideClick } from "../../../hooks/useDetectOutsideClick";
 import { useMounted } from "../../../hooks/useMounted";
 import { useMediaQuery } from "react-responsive";
-import AvatarModal from "./modal/AvatarModal";
 
 // MobileForm and DesktopForm typing
 type IForm = {
@@ -45,28 +47,26 @@ const MobileForm = (props: IForm) => {
 // to conditionally render form for desktops only
 const DesktopForm = (props: IForm) => {
   return (
-    <div className={styles.formContainer}>
-      <form onSubmit={props.handleSubmit} className={styles.form}>
-        <input
-          value={props.search}
-          onChange={(e) => props.setSearch(e.currentTarget.value)}
-          name="search"
-          placeholder="Search"
-          type="text"
-        />
-        <button>
-          <BsSearch />
-        </button>
-      </form>
-    </div>
+    <form onSubmit={props.handleSubmit} className={styles.form}>
+      <input
+        value={props.search}
+        onChange={(e) => props.setSearch(e.currentTarget.value)}
+        name="search"
+        placeholder="Search"
+        type="text"
+      />
+      <button>
+        <BsSearch />
+      </button>
+    </form>
   );
 };
 
 type INavbar = {
-  setExpand: React.Dispatch<SetStateAction<boolean>>;
+  handleSidebarExpand: () => void;
 };
 
-function Navbar({ setExpand }: INavbar) {
+function Navbar({ handleSidebarExpand }: INavbar) {
   // google oauth
   const { data: session, status } = useSession();
 
@@ -81,21 +81,11 @@ function Navbar({ setExpand }: INavbar) {
 
   // close theme modal if mouse clicked outside the modal
   const themeRef = useRef<HTMLDivElement>(null);
-  useDetectOutsideClick(
-    themeRef,
-    useCallback(() => {
-      setThemeModal(false);
-    }, [setThemeModal])
-  );
+  useDetectOutsideClick(themeRef, () => setThemeModal(false));
 
   // close avatar modal if mouse clicked outside the modal
   const avatarRef = useRef<HTMLDivElement>(null);
-  useDetectOutsideClick(
-    avatarRef,
-    useCallback(() => {
-      setAvatarModal(false);
-    }, [setAvatarModal])
-  );
+  useDetectOutsideClick(avatarRef, () => setAvatarModal(false));
 
   // check for device width to render either desktop form or mobile form
   const isMobile = useMediaQuery({ maxWidth: 1024 });
@@ -117,16 +107,15 @@ function Navbar({ setExpand }: INavbar) {
     isMobile && setMobileInput(false);
   };
 
-  // wait for theme hook (check ./hooks)
-  return !useMounted() ? null : (
+  // wait for theme hook to be mounted (check ./hooks)
+  const mounted = useMounted();
+
+  return !mounted ? null : (
     <nav
       className={theme === "light" ? styles.container : styles.containerDark}
     >
       {/* menu */}
-      <div
-        onClick={() => setExpand((prev) => !prev)}
-        className={styles.sidebarMenu}
-      >
+      <div onClick={handleSidebarExpand} className={styles.sidebarMenu}>
         <HiOutlineMenu title="open sidebar" />
       </div>
 
@@ -218,4 +207,4 @@ function Navbar({ setExpand }: INavbar) {
   );
 }
 
-export default Navbar;
+export default React.memo(Navbar);

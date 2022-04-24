@@ -7,6 +7,14 @@ import GoogleProvider from "next-auth/providers/google";
  * returns the old token and an error property
  */
 
+type IUser =
+  | {
+      name?: string | null | undefined;
+      email?: string | null | undefined;
+      image?: string | null | undefined;
+    }
+  | undefined;
+
 async function refreshAccessToken(token: any) {
   try {
     const url =
@@ -72,17 +80,19 @@ export default NextAuth({
     async jwt({ token, user, account }) {
       // Initial sign in
 
+      const expireDate = account?.expires_at ?? 0;
+
       if (account && user) {
         token = {
           accessToken: account.access_token,
-          accessTokenExpires: Date.now() + account.expires_at * 1000,
+          accessTokenExpires: Date.now() + expireDate * 1000,
           refreshToken: account.refresh_token,
           user,
         };
       }
 
       // Return previous token if the access token has not expired yet
-      if (Date.now() < token.accessTokenExpires) {
+      if (Date.now() < (token.accessTokenExpires as number)) {
         return token;
       }
 
@@ -94,7 +104,7 @@ export default NextAuth({
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       session.error = token.error;
-      session.user = token.user;
+      session.user = token.user as IUser;
       return session;
     },
   },

@@ -53,6 +53,9 @@ type ISubs = {
 
 // < -------- * ------- >
 function Subs({ session, data }: ISubs) {
+  // < -------- * ------- >
+  const router = useRouter();
+  // < -------- * ------- >
   const { items, nextPageToken } = data || {};
   const [channels, setChannels] = useState<IVideo[]>(items);
   const pageTokenRef = useRef(nextPageToken);
@@ -76,15 +79,19 @@ function Subs({ session, data }: ISubs) {
       pageTokenRef.current
     );
 
+    // if quotas exeeded
+    if (res === 403) {
+      router.push("/500");
+    }
+
     pageTokenRef.current = res?.nextPageToken;
     setChannels(channels.concat(await res.items));
   };
 
   // < -------- * ------- >
   // push to channel page
-  const { push } = useRouter();
   const handleChannel = (channelId: string) => {
-    push({ pathname: "/channel", query: { id: channelId } });
+    router.push({ pathname: "/channel", query: { id: channelId } });
   };
   // < -------- * ------- >
   return (
@@ -180,6 +187,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { accessToken } = session;
 
   const data = await getSubscriptions(accessToken);
+  console.log("data: ", data);
+
+  // if quotas exeeded
+  if (data === 403) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500",
+      },
+    };
+  }
 
   return {
     props: { session, data },

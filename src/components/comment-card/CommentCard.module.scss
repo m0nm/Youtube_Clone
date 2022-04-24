@@ -1,9 +1,15 @@
+@use "../../../styles/variables" as *;
+
 .container {
   width: 100%;
   min-height: 100px;
   margin-left: 1rem;
   margin-bottom: 1rem;
   display: flex;
+
+  @media (max-width: $breakpoint) {
+    margin-left: 0;
+  }
 }
 
 .avatar {
@@ -47,6 +53,7 @@
   // comment
   .comment {
     margin: 5px 0 10px 0;
+    font-size: 16px;
   }
 
   // likes

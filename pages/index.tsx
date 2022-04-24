@@ -31,10 +31,15 @@ const Home = () => {
       let data = [];
 
       // if the active category is "All" then get the popular videos
+
       if (category === "All") {
         data = await getPopularVideos();
         pageTokenRef.current = data?.nextPageToken;
         mounted && setVideos(await data?.videos);
+
+        // if quotas exeeded
+        data === 403 && Router.push("/500");
+
         return false;
       }
 
@@ -44,14 +49,10 @@ const Home = () => {
       pageTokenRef.current = data?.nextPageToken;
 
       // if quotas exeeded
-      if (data === 403) {
-        Router.push("/404");
-      }
+      data === 403 && Router.push("/500");
     };
 
-    try {
-      fetchVideos();
-    } catch (error) {}
+    fetchVideos();
 
     return () => {
       mounted = false;
@@ -68,11 +69,19 @@ const Home = () => {
 
       setVideos(videos.concat(newVideos));
       pageTokenRef.current = res?.nextPageToken;
+
+      // if quotas exeeded
+      res === 403 && Router.push("/500");
+
       return false;
     }
 
     // more category videos
     const res = await searchVideos(category, pageTokenRef.current);
+
+    // if quotas exeeded
+    res === 403 && Router.push("/500");
+
     setVideos(videos.concat(await res?.videos));
     pageTokenRef.current = res?.nextPageToken;
   };

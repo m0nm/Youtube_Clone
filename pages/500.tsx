@@ -23,7 +23,7 @@ const button = {
   textDecoration: "underline",
 };
 
-function ErrorMessage() {
+function Custom500() {
   return (
     <>
       <Head>
@@ -42,4 +42,4 @@ function ErrorMessage() {
   );
 }
 
-export default ErrorMessage;
+export default Custom500;

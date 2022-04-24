@@ -2,21 +2,20 @@
 
 .container {
   width: 100%;
-  margin: 2rem auto 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 10px;
-  row-gap: 3rem;
-  transform: scaleX(0.95);
+  margin-top: 2rem;
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  row-gap: 2rem;
   overflow-y: hidden !important;
+
   @media (max-width: $breakpoint) {
-    flex-direction: column;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
 
 .container > * {
   @media (max-width: $breakpoint) {
     margin: 0 auto 2rem auto;
-    transform: scale(1.2);
   }
 }

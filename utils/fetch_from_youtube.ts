@@ -80,7 +80,7 @@ export const getRelatedVideos = async (id: string) => {
 
   try {
     const res = await axios.get(baseUrl + "/search", { params });
-    const { items, nextPageToken } = await res.data;
+    const { items } = await res.data;
 
     const videos = await get_vids_stats_channel_details(items, true);
 
@@ -281,5 +281,25 @@ export const getChannelVideos = async (
   } catch (error: any) {
     console.log("getChannelVideos", error.response?.data.error);
     return error.response && error.response.status;
+  }
+};
+
+// < -------- * --------- >
+// get deslikes count of a video
+// from "returnyoutubedislike.com"
+export const getVideoDislikes = async (videoId: string) => {
+  const endpoint = "https://returnyoutubedislikeapi.com/votes";
+
+  try {
+    const res = await axios.get(endpoint, {
+      params: { videoId },
+    });
+
+    const { dislikes } = await res.data;
+
+    return dislikes;
+  } catch (error: any) {
+    console.log("getVideoDislikes", error.response?.data.error);
+    return undefined;
   }
 };

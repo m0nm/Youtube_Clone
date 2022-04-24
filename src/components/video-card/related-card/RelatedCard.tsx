@@ -14,6 +14,7 @@ type IRelatedCard = {
   handleChannel: () => void;
 };
 
+// related videos if on watch page
 function RelatedCard(props: IRelatedCard) {
   return (
     <div className={styles.relatedCard}>

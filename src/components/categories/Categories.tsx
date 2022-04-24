@@ -40,7 +40,10 @@ function Categories({ category, setCategory }: ICategories) {
     setCategory(keyword);
   };
 
-  return !useMounted() ? null : (
+  // wait for theme to be mounted
+  const mounted = useMounted();
+
+  return !mounted ? null : (
     <ScrollContainer
       className={theme === "light" ? styles.container : styles.containerDark}
     >

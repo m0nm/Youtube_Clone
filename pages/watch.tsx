@@ -9,13 +9,14 @@ import {
   getComments,
   getRelatedVideos,
   getVideoById,
+  getVideoDislikes,
 } from "../utils/fetch_from_youtube";
 
 import CommentCard from "../src/components/comment-card/CommentCard";
 import ShowMoreText from "react-show-more-text";
 import VideoCard from "../src/components/video-card/VideoCard";
 
-import { AiOutlineLike } from "react-icons/ai";
+import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 import { dateFormatter, numbersFormatter } from "../utils/format_numbers_date";
 import styles from "../styles/pages/Watch.module.scss";
 import { useRouter } from "next/router";
@@ -24,10 +25,11 @@ import { useRouter } from "next/router";
 type IWatch = {
   relatedVideos: IVideo[];
   video: IVideo;
+  dislikeCount: string;
   comments: IComment[];
 };
 
-function Watch({ video, relatedVideos, comments }: IWatch) {
+function Watch({ video, dislikeCount, relatedVideos, comments }: IWatch) {
   const videoId = typeof video.id === "string" ? video.id : video.id.videoId;
   const title = video.snippet.title || video.snippet.localized.title;
   const channelId = video.snippet.channelId;
@@ -47,8 +49,9 @@ function Watch({ video, relatedVideos, comments }: IWatch) {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // format like count, ex: 1000 to 1k
+  // format like/dislike count, ex: 1000 to 1k
   const likes = numbersFormatter(video.statistics?.likeCount as string);
+  const dislikes = numbersFormatter(dislikeCount);
 
   // push to channel page on channel click
   const { push } = useRouter();
@@ -81,10 +84,18 @@ function Watch({ video, relatedVideos, comments }: IWatch) {
             {views} views • {date}
           </span>
 
-          {/* likes */}
+          {/* likes and dislikes */}
           <div>
             <AiOutlineLike />
             {likes}
+
+            {/* if request is still valid */}
+            {dislikeCount && (
+              <>
+                <AiOutlineDislike />
+                {dislikes}
+              </>
+            )}
           </div>
         </div>
 
@@ -167,6 +178,8 @@ export default Watch;
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { video } = await getVideoById(query.v as string);
 
+  const dislikeCount = await getVideoDislikes(query.v as string);
+
   const relatedVideos = await getRelatedVideos(query.v as string);
 
   const comments = await getComments(query.v as string);
@@ -176,7 +189,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return {
       redirect: {
         permanent: false,
-        destination: "/404",
+        destination: "/500",
       },
     };
   }
@@ -185,6 +198,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       // json methods to not get server error if fetch results is undefined
       video: JSON.parse(JSON.stringify(video)),
+      dislikeCount: JSON.parse(JSON.stringify(dislikeCount)),
       relatedVideos: JSON.parse(JSON.stringify(relatedVideos)),
       comments: JSON.parse(JSON.stringify(comments)),
     },

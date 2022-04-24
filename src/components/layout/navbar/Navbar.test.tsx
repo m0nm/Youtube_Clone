@@ -7,7 +7,7 @@ import { setup } from "../../../../utils/setup_test_render";
 
 describe("<Navbar />", () => {
   test("Navbar renders correctly", () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
   });
@@ -15,7 +15,7 @@ describe("<Navbar />", () => {
   test("navbar input initialized empty", () => {
     setup(
       <ResponsiveContext.Provider value={{ width: "1300" }}>
-        <Navbar setExpand={() => {}} />
+        <Navbar handleSidebarExpand={() => {}} />
       </ResponsiveContext.Provider>
     );
     const searchInput = screen.getByRole("textbox");
@@ -26,7 +26,7 @@ describe("<Navbar />", () => {
   test("navbar input onchange", async () => {
     setup(
       <ResponsiveContext.Provider value={{ width: "1300" }}>
-        <Navbar setExpand={() => {}} />
+        <Navbar handleSidebarExpand={() => {}} />
       </ResponsiveContext.Provider>
     );
 
@@ -40,7 +40,7 @@ describe("<Navbar />", () => {
   test("mobile navbar search input appear on clicking search icon", async () => {
     setup(
       <ResponsiveContext.Provider value={{ width: "700" }}>
-        <Navbar setExpand={() => {}} />
+        <Navbar handleSidebarExpand={() => {}} />
       </ResponsiveContext.Provider>
     );
 
@@ -51,7 +51,7 @@ describe("<Navbar />", () => {
   });
 
   test("the sign-in button should be rendered if there is no session", async () => {
-    setup(<Navbar setExpand={() => {}} />, false);
+    setup(<Navbar handleSidebarExpand={() => {}} />, false);
 
     const button = screen.getByRole("button", { name: "SIGN IN" });
 
@@ -59,7 +59,7 @@ describe("<Navbar />", () => {
   });
 
   test("the sign-in button should NOT be rendered if there is a session", async () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     const button = screen.queryByText("SIGN IN");
 
@@ -68,7 +68,7 @@ describe("<Navbar />", () => {
 
   test("navbar logo renders correctly on dark theme", () => {
     // on dark theme
-    setup(<Navbar setExpand={() => {}} />, undefined, "dark");
+    setup(<Navbar handleSidebarExpand={() => {}} />, undefined, "dark");
 
     waitFor(async () => {
       const logo = await screen.getByAltText(/youtube logo dark/i);
@@ -78,7 +78,7 @@ describe("<Navbar />", () => {
 
   test("navbar logo renders correctly on light theme", () => {
     // on light theme
-    setup(<Navbar setExpand={() => {}} />, undefined, "light");
+    setup(<Navbar handleSidebarExpand={() => {}} />, undefined, "light");
 
     waitFor(async () => {
       const logo = await screen.queryByAltText(/youtube logo dark/i);

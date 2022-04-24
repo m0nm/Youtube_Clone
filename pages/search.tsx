@@ -7,19 +7,13 @@ import VideoCard from "../src/components/video-card/VideoCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
 
+import styles from "../styles/pages/Search.module.scss";
+
 type ISearch = {
   data: {
     nextPageToken: string;
     videos: IVideo[];
   };
-};
-
-// just basic styles
-const styles = {
-  width: "100%",
-  display: "flex",
-  flexDirection: "column" as "column",
-  paddingTop: "4rem",
 };
 
 function Search({ data }: ISearch) {
@@ -29,11 +23,14 @@ function Search({ data }: ISearch) {
   const pageTokenRef = useRef(nextPageToken);
 
   // for next search attempt on same page
-  const { query } = useRouter();
+  const { query, push } = useRouter();
 
   useEffect(() => {
     (async () => {
       const res = await searchVideos(query.query);
+
+      // if quotas exeeded
+      res === 403 && push("/500");
 
       pageTokenRef.current = await res.nextPageToken;
       setVideos(await res.videos);
@@ -43,6 +40,9 @@ function Search({ data }: ISearch) {
   // for infinite sccroll
   const fetchMoreVideos = async () => {
     const res = await searchVideos(query.query, pageTokenRef.current);
+
+    // if quotas exeeded
+    res === 403 && push("/500");
 
     pageTokenRef.current = await res.nextPageToken;
     const newVideos = await res.videos;
@@ -56,12 +56,13 @@ function Search({ data }: ISearch) {
         <title>Youtube Clone | Search</title>
       </Head>
 
+      {/* if no results found */}
       {!videos?.length ? (
-        <div style={{ ...styles, alignItems: "center" }}>
+        <div className={styles.container}>
           <h1 style={{ fontSize: "150px" }}>404</h1>
           <h1>No results found</h1>
           <br />
-          <p>Try different keywords or remove search filters</p>
+          <p>Try different keywords</p>
         </div>
       ) : (
         <InfiniteScroll
@@ -69,7 +70,7 @@ function Search({ data }: ISearch) {
           next={fetchMoreVideos}
           hasMore
           loader=""
-          style={styles}
+          className={styles.container}
         >
           {videos.map((video) => {
             const id = typeof video.id === "object" && video.id.videoId;
@@ -108,11 +109,12 @@ export default Search;
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const data = await searchVideos(query.query as string);
 
+  // if quotas exeeded
   if (data === 403) {
     return {
       redirect: {
         permanent: false,
-        destination: "/404",
+        destination: "/500",
       },
     };
   }
