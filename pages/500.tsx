@@ -23,6 +23,9 @@ const button = {
   textDecoration: "underline",
 };
 
+// if quotas exeeded then use this website
+const fallback_url = "https://youtube-clone-v3-duplicate.vercel.app";
+
 function Custom500() {
   return (
     <>
@@ -34,7 +37,7 @@ function Custom500() {
         <h1 style={heading}>
           Sorry the website is not working right now (quotas exeeded)
         </h1>
-        <a style={button} href="#">
+        <a style={button} href={fallback_url}>
           Try this one instead
         </a>
       </div>

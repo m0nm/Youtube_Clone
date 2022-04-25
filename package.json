@@ -30,6 +30,7 @@
     "react-timeago": "^6.2.1",
     "react-tooltip": "^4.2.21",
     "sass": "^1.49.9",
+    "sharp": "^0.30.4",
     "zustand": "^3.7.1"
   },
   "devDependencies": {

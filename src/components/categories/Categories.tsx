@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import React from "react";
-import classNames from "classNames";
+import classNames from "classnames";
 import ScrollContainer from "react-indiana-drag-scroll";
 
 import styles from "./Categories.module.scss";
