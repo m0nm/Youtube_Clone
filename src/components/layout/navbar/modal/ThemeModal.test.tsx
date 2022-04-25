@@ -13,7 +13,7 @@ describe("<ThemeModal />", () => {
   });
 
   test("clicking on option symbol will open the theme modal", async () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     const option = screen.getByTitle(/open modal/i);
 
@@ -23,7 +23,7 @@ describe("<ThemeModal />", () => {
   });
 
   test("clicking on option symbol will close the theme modal", async () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     try {
       const option = screen.getByTitle(/open modal/i);
@@ -35,7 +35,7 @@ describe("<ThemeModal />", () => {
   });
 
   test("clicking outside the theme modal will make it dissapear", async () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     const option = screen.getByTitle(/open modal/i);
 
@@ -63,7 +63,7 @@ describe("<ThemeModal />", () => {
   });
 
   test("selecting the dark theme will toggle the theme to dark", async () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     try {
       const option = screen.getByTitle(/open modal/i);

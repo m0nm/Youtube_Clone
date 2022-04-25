@@ -13,7 +13,7 @@ describe("<AvatarModal />", () => {
   });
 
   test("clicking on avatar render avatar modal", async () => {
-    setup(<Navbar setExpand={() => {}} />);
+    setup(<Navbar handleSidebarExpand={() => {}} />);
 
     const avatar = screen.getByTestId(/avatar/i);
 
